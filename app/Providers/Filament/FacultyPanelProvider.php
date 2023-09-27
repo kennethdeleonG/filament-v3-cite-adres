@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Faculty\Pages\CustomRegistration;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -26,6 +27,8 @@ class FacultyPanelProvider extends PanelProvider
             ->id('faculty')
             ->path('faculty')
             ->login()
+            ->registration(CustomRegistration::class)
+            ->emailVerification()
             ->colors([
                 'primary' => Color::Amber,
             ])
