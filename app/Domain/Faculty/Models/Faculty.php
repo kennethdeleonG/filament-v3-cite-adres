@@ -24,6 +24,7 @@ class Faculty extends Authenticatable implements MustVerifyEmail, HasMedia
     protected $guard = 'faculties';
 
     protected $fillable = [
+        'name',
         'first_name',
         'last_name',
         'address',

@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Faculty::create([
+            'name' => 'John Doe',
             'first_name' => 'John',
             'last_name' => 'Doe',
             'email' => 'johndoe@bulsu.edu.ph',

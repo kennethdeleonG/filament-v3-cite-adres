@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('faculties', function (Blueprint $table) {
             $table->id();
-
+            $table->string('name');
             $table->string('first_name')->index();
             $table->string('last_name')->index();
             $table->longText('address')->nullable();
