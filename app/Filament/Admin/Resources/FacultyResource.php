@@ -10,9 +10,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Support\Str;
-use Throwable;
 
 class FacultyResource extends Resource
 {
