@@ -1,5 +1,6 @@
 <?php
 
+use App\Domain\Faculty\Models\Faculty;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('faculty/email/verify/{faculty}/{hash}', function ($facultyId, $hash) {
+    $faculty = Faculty::findOrFail($facultyId);
+    $faculty->markEmailAsVerified();
+
+    return redirect()->route('filament.faculty.auth.login');
+})->name('faculty.verification.verify');
