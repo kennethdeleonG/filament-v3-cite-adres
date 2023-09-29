@@ -15,7 +15,7 @@ use Illuminate\Http\RedirectResponse;
 
 class DownloadSingleFileAction
 {
-    public function execute(Asset $asset, DownloadData $downloadData): RedirectResponse|Redirector
+    public function execute(Asset $asset, DownloadData $downloadData)
     {
         if ($asset->file && Storage::disk('s3')->exists($asset->file)) {
 
