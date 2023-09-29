@@ -120,8 +120,8 @@
                         class="flex justify-between hover:bg-gray-500/5 dark:hover:bg-gray-300/5 p-2 rounded-md"
                         wire:loading.class.delay="opacity-50 pointer-events-none" x-data="{ showChild: false }"
                         x-on:mouseenter="showChild = true" x-on:mouseleave="showChild = false">
-                        <div class="flex justify-start items-center">
-                            <x-dynamic-component class="h-6" component="heroicon-s-folder" />
+                        <div class="flex justify-start items-center space-x-2">
+                            <x-dynamic-component class="h-6 " component="heroicon-s-folder" />
                             <div class="pl-2"> {{ $folderMove->name }}</div>
                         </div>
                         <div x-show="showChild">

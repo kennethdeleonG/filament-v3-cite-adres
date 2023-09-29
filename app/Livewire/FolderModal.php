@@ -172,7 +172,7 @@ class FolderModal extends Component implements HasForms
     {
         $folderModel = Folder::with('assets')->find($data['id']);
 
-        $this->dispatchBrowserEvent('open-modal', ['id' => 'move-folder-modal-handle']);
+        $this->dispatch('open-modal', id: 'move-folder-modal-handle');
         $this->folder = $folderModel instanceof Folder ? $folderModel : null;
         $this->folderName = $folderModel instanceof Folder ? $folderModel->name : null;
         $this->folderId = $folderModel instanceof Folder ? $folderModel->id : null;
@@ -247,8 +247,8 @@ class FolderModal extends Component implements HasForms
                 ->execute($this->folder, FolderData::fromArray($data));
 
             if ($result instanceof Folder) {
-                $this->emitUp('refreshPage', 'move', json_encode($result));
-                $this->dispatchBrowserEvent('close-modal', ['id' => 'move-folder-modal-handle']);
+                $this->dispatch('refreshPage', 'move', json_encode($result))->to(Document::class);
+                $this->dispatch('close-modal', id: 'move-folder-modal-handle');
                 Notification::make()
                     ->title('Folder Moved')
                     ->success()

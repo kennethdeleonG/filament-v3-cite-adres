@@ -64,59 +64,59 @@ class Document extends Page
         return view('filament.components.custom-header');
     }
 
-    // //for breadcrumbs in body
-    // public function getBreadcrumbsMenu(): array
-    // {
-    //     if (is_null($this->folder_id) || !empty($this->search) || !empty($this->filterBy)) {
-    //         return [];
-    //     }
+    //for breadcrumbs in body
+    public function getBreadcrumbsMenu(): array
+    {
+        if (is_null($this->folder_id) || !empty($this->search) || !empty($this->filterBy)) {
+            return [];
+        }
 
-    //     $parentFolder = FolderModel::find($this->folder_id);
+        $parentFolder = FolderModel::find($this->folder_id);
 
-    //     if (is_null($parentFolder) || is_null($parentFolder->ancestors)) {
-    //         return [];
-    //     }
+        if (is_null($parentFolder) || is_null($parentFolder->ancestors)) {
+            return [];
+        }
 
-    //     $folderAncestors = $parentFolder->ancestors->toArray();
+        $folderAncestors = $parentFolder->ancestors->toArray();
 
-    //     $crumbs = [];
-    //     foreach ($folderAncestors as $node) {
-    //         $truncatedName = Str::limit($node['name'], 20, '...');
-    //         $tooltip = $node['name'];
-    //         $crumbs[self::getUrl() . '/' . $node['id']] = new HtmlString('<span title="' . $tooltip . '">' . $truncatedName . '</span>');
-    //     }
-    //     $truncatedParentFolderName = Str::limit($parentFolder->name, 20, '...');
-    //     $crumbs[self::getUrl() . '/' . $parentFolder->id] = new HtmlString('<span title="' . $parentFolder->name . '">' . $truncatedParentFolderName . '</span>');
+        $crumbs = [];
+        foreach ($folderAncestors as $node) {
+            $truncatedName = Str::limit($node['name'], 20, '...');
+            $tooltip = $node['name'];
+            $crumbs[self::getUrl() . '/' . $node['id']] = new HtmlString('<span title="' . $tooltip . '">' . $truncatedName . '</span>');
+        }
+        $truncatedParentFolderName = Str::limit($parentFolder->name, 20, '...');
+        $crumbs[self::getUrl() . '/' . $parentFolder->id] = new HtmlString('<span title="' . $parentFolder->name . '">' . $truncatedParentFolderName . '</span>');
 
-    //     $rootMenu = [
-    //         self::getUrl() => trans('Root Directory'),
-    //     ];
+        $rootMenu = [
+            self::getUrl() => trans('Root Directory'),
+        ];
 
-    //     $mergedCrumbs = array_merge($rootMenu, $crumbs);
+        $mergedCrumbs = array_merge($rootMenu, $crumbs);
 
-    //     return $mergedCrumbs;
-    // }
+        return $mergedCrumbs;
+    }
 
-    // public function getBreadcrumbs(): array
-    // {
-    //     return [
-    //         self::getUrl() => trans('Document'),
-    //     ];
-    // }
+    public function getBreadcrumbs(): array
+    {
+        return [
+            self::getUrl() => trans('Document'),
+        ];
+    }
 
-    // public static function getNavigationItems(): array
-    // {
-    //     return [
-    //         NavigationItem::make(static::getNavigationLabel())
-    //             ->group(static::getNavigationGroup())
-    //             ->icon(static::getNavigationIcon())
-    //             ->isActiveWhen(fn (): bool => request()->routeIs('filament.resources.assets.*')
-    //                 || request()->routeIs("filament.pages./documents/*"))
-    //             ->sort(static::getNavigationSort())
-    //             ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
-    //             ->url(static::getNavigationUrl()),
-    //     ];
-    // }
+    public static function getNavigationItems(): array
+    {
+        return [
+            NavigationItem::make(static::getNavigationLabel())
+                ->group(static::getNavigationGroup())
+                ->icon(static::getNavigationIcon())
+                ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.resources.assets.*')
+                    || request()->routeIs("filament.admin.pages..documents.*"))
+                ->sort(static::getNavigationSort())
+                ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
+                ->url(static::getNavigationUrl()),
+        ];
+    }
 
     private function fetchData(): void
     {
@@ -357,12 +357,12 @@ class Document extends Page
                         break;
                     }
                 case 'move-to': {
-                        $this->emitTo('filament.livewire.folder-modal', 'moveFolder', $folder);
+                        $this->dispatch('moveFolder', $folder)->to(FolderModal::class);
 
                         break;
                     }
                 case 'show-history': {
-                        redirect(route('filament.pages./documents/history/{subjectType?}/{subjectId?}', ['subjectType' => 'folders', 'subjectId' => $folder->id]));
+                        redirect(route('filament.admin.pages..documents.history.{subjectType?}.{subjectId?}', ['subjectType' => 'folders', 'subjectId' => $folder->id]));
 
                         break;
                     }
