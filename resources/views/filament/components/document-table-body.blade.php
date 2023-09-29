@@ -186,6 +186,38 @@
                                                         </span>
                                                     </button>
                                                 @endforeach
+                                            @else
+                                                @foreach ($actions as $action)
+                                                    <button style=";"
+                                                        class="fi-dropdown-list-item flex w-full items-center gap-2 whitespace-nowrap
+                                                 rounded-md p-2 text-sm transition-colors duration-75
+                                                  outline-none disabled:pointer-events-none disabled:opacity-70 
+                                                  fi-color-gray fi-dropdown-list-item-color-gray hover:bg-gray-50
+                                                   focus:bg-gray-50 dark:hover:bg-white/5 dark:focus:bg-white/5 fi-ac-grouped-action"
+                                                        type="button" wire:loading.attr="disabled"
+                                                        wire:target="mountActionAsset('{{ $action['action'] }}', {{ $document['id'] }})"
+                                                        wire:click="mountActionAsset('{{ $action['action'] }}', {{ $document['id'] }})">
+                                                        <svg fill="none" viewBox="0 0 24 24"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            class="animate-spin fi-dropdown-list-item-icon h-5 w-5 text-gray-400 dark:text-gray-500"
+                                                            wire:loading.delay=""
+                                                            wire:target="mountActionAsset('{{ $action['action'] }}', {{ $document['id'] }})">
+                                                            <path clip-rule="evenodd"
+                                                                d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                                                                fill-rule="evenodd" fill="currentColor"
+                                                                opacity="0.2">
+                                                            </path>
+                                                            <path
+                                                                d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z"
+                                                                fill="currentColor"></path>
+                                                        </svg>
+
+                                                        <span
+                                                            class="fi-dropdown-list-item-label flex-1 truncate text-start text-gray-700 dark:text-gray-200">
+                                                            {{ $action['label'] }}
+                                                        </span>
+                                                    </button>
+                                                @endforeach
                                             @endif
                                         </div>
                                     </div>

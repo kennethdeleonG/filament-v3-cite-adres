@@ -8,7 +8,7 @@ use App\Domain\Asset\Models\Asset;
 
 class MoveAssetAction
 {
-    public function execute(?Asset $asset = null, int $parentFolderId, string $oldPath, string $newPath): Asset|null
+    public function execute(?Asset $asset = null, int|null $parentFolderId, string $oldPath, string $newPath): Asset|null
     {
         if (!is_null($asset)) {
             $folderIdToLog = $asset->folder_id;

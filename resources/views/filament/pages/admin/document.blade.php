@@ -67,17 +67,17 @@
                     ])
                 @endforeach
 
-                {{-- @foreach ($this->assetList as $asset)
+                @foreach ($this->assetList as $asset)
                     @include('filament.components.document-table-body', [
                         'document' => $asset,
                         'type' => 'asset',
                         'actions' => $this->getAssetActions(),
                     ])
-                @endforeach --}}
+                @endforeach
             </tbody>
         </table>
     </div>
 
     @livewire('folder-modal')
-    {{-- <livewire:filament.livewire.folder-modal /> --}}
+    @livewire('asset-modal', ['folderId' => "$this->folder_id"])
 </x-filament-panels::page>

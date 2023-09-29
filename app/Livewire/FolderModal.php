@@ -41,17 +41,7 @@ class FolderModal extends Component implements HasForms
 
     public function mount(): void
     {
-        // $this->form->fillFormWithDataAndCallHooks([
-        //     'name' => 'test name',
-        //     'is_private' => true,
-        // ]);
         $this->form->fill();
-        // $this->form->fill(
-        //     [
-        //         'name' => 'test name',
-        //         'is_private' => true,
-        //     ]
-        // );
     }
 
     public function render()
