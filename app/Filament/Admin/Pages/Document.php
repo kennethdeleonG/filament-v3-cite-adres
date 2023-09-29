@@ -40,6 +40,8 @@ class Document extends Page
 
     public ?int $folder_id = null;
 
+    protected ?string $heading = 'Documents';
+
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.admin.document';
