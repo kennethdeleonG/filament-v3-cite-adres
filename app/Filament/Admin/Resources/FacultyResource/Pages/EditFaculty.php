@@ -9,10 +9,13 @@ use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Filament\Support\Enums\Alignment;
 
 class EditFaculty extends EditRecord
 {
     protected static string $resource = FacultyResource::class;
+
+    public static string | Alignment $formActionsAlignment = Alignment::Right;
 
     protected function getHeaderActions(): array
     {

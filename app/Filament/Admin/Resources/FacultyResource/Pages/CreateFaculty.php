@@ -8,10 +8,13 @@ use App\Filament\Admin\Resources\FacultyResource;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Filament\Support\Enums\Alignment;
 
 class CreateFaculty extends CreateRecord
 {
     protected static string $resource = FacultyResource::class;
+
+    public static string | Alignment $formActionsAlignment = Alignment::Right;
 
     public static function canCreateAnother(): bool
     {
