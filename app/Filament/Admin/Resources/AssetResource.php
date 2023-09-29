@@ -34,9 +34,9 @@ class AssetResource extends Resource
                         ->unique(ignoreRecord: true)
                         ->required(),
                     Forms\Components\FileUpload::make('file')
-                        // ->enableDownload()
+                        ->downloadable()
                         ->required()
-                        ->disk(config('filesystems.default'))
+                        ->disk('s3')
                         ->directory(function ($livewire) {
                             if (!is_null($livewire->ownerRecord)) {
                                 return $livewire->ownerRecord->path;
