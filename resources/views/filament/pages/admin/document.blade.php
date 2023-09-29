@@ -78,5 +78,6 @@
         </table>
     </div>
 
-    <livewire:filament.livewire.folder-modal />
+    @livewire('folder-modal')
+    {{-- <livewire:filament.livewire.folder-modal /> --}}
 </x-filament-panels::page>

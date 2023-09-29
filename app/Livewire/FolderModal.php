@@ -1,20 +1,22 @@
 <?php
 
-namespace App\Filament\Admin\Livewire;
+namespace App\Livewire;
 
 use App\Domain\Folder\Actions\DeleteFolderAction;
 use App\Domain\Folder\Actions\MoveFolderAction;
 use App\Domain\Folder\Actions\UpdateFolderAction;
 use App\Domain\Folder\DataTransferObjects\FolderData;
 use App\Domain\Folder\Models\Folder;
+use App\Filament\Admin\Pages\Document;
+use Filament\Forms\Concerns\InteractsWithForms;
 use Livewire\Component;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Str;
 use Filament\Forms;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Filament\Forms\Form;
 
 class FolderModal extends Component implements HasForms
 {
@@ -27,6 +29,7 @@ class FolderModal extends Component implements HasForms
     public ?string $navigateFolderName = null;
     public ?int $previousFolderId = null;
     public ?int $parentId = null;
+    public ?array $data = [];
 
     /** @var array */
     protected $listeners = [
@@ -38,7 +41,17 @@ class FolderModal extends Component implements HasForms
 
     public function mount(): void
     {
+        // $this->form->fillFormWithDataAndCallHooks([
+        //     'name' => 'test name',
+        //     'is_private' => true,
+        // ]);
         $this->form->fill();
+        // $this->form->fill(
+        //     [
+        //         'name' => 'test name',
+        //         'is_private' => true,
+        //     ]
+        // );
     }
 
     public function render()
@@ -46,24 +59,26 @@ class FolderModal extends Component implements HasForms
         return view('filament.components.livewire.folder-modal');
     }
 
-    //edit folder modal
-    protected function getFormSchema(): array
+    // //edit folder modal
+    public function form(Form $form): Form
     {
-        return [
-            Forms\Components\TextInput::make('name')
-                ->label('')
-                ->validationAttribute('name')
-                ->dehydrateStateUsing(function ($state) {
-                    $existingRecords = Folder::where('name', 'LIKE', $state . '%')->where('folder_id', $this->parentId)
-                        ->whereNot('id', $this->folderId)->count();
-                    if ($existingRecords > 0) {
-                        return $state . ' - (' . $existingRecords . ')';
-                    }
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('name')
+                    ->label('')
+                    ->validationAttribute('name')
+                    ->dehydrateStateUsing(function ($state) {
+                        $existingRecords = Folder::where('name', 'LIKE', $state . '%')->where('folder_id', $this->parentId)
+                            ->whereNot('id', $this->folderId)->count();
+                        if ($existingRecords > 0) {
+                            return $state . ' - (' . $existingRecords . ')';
+                        }
 
-                    return $state;
-                }),
-            Forms\Components\Toggle::make('is_private')->label('Private'),
-        ];
+                        return $state;
+                    }),
+                Forms\Components\Toggle::make('is_private')->label('Private'),
+            ])
+            ->statePath('data');
     }
 
     //edit listener
@@ -71,11 +86,9 @@ class FolderModal extends Component implements HasForms
     {
         $folderModel = Folder::with('assets')->find($data['id']);
 
-        $this->dispatchBrowserEvent('open-modal', ['id' => 'edit-folder-modal-handle']);
-        $this->form->fill([
-            'name' => $data['name'],
-            'is_private' => $data['is_private'],
-        ]);
+        $this->form->fill($data);
+
+        $this->dispatch('open-modal', id: 'edit-folder-modal-handle');
 
         $this->folder = $folderModel instanceof Folder ? $folderModel : null;
         $this->folderId = $folderModel instanceof Folder ? $folderModel->id : null;
@@ -111,8 +124,8 @@ class FolderModal extends Component implements HasForms
                 ->execute($this->folder, FolderData::fromArray($data));
 
             if ($result instanceof Folder) {
-                $this->emitUp('refreshPage', 'update', json_encode($result));
-                $this->dispatchBrowserEvent('close-modal', ['id' => 'edit-folder-modal-handle']);
+                $this->dispatch('refreshPage', 'update', json_encode($result))->to(Document::class);
+                $this->dispatch('close-modal', id: 'edit-folder-modal-handle');
                 Notification::make()
                     ->title('Folder Updated')
                     ->success()
@@ -130,7 +143,7 @@ class FolderModal extends Component implements HasForms
     {
         $folderModel = Folder::find($data['id']);
 
-        $this->dispatchBrowserEvent('open-modal', ['id' => 'delete-folder-modal-handle']);
+        $this->dispatch('open-modal', id: 'delete-folder-modal-handle');
 
         $this->folder = $folderModel instanceof Folder ? $folderModel : null;
     }
@@ -144,8 +157,8 @@ class FolderModal extends Component implements HasForms
             $result = app(DeleteFolderAction::class)->execute($this->folder);
 
             if ($result) {
-                $this->emitUp('refreshPage', 'delete', json_encode($recordToDelete));
-                $this->dispatchBrowserEvent('close-modal', ['id' => 'delete-folder-modal-handle']);
+                $this->dispatch('refreshPage', 'delete', json_encode($recordToDelete))->to(Document::class);
+                $this->dispatch('close-modal', id: 'delete-folder-modal-handle');
                 Notification::make()
                     ->title('Folder Deleted')
                     ->success()

@@ -9,6 +9,7 @@ use App\Domain\Folder\Actions\CreateFolderAction;
 use App\Domain\Folder\Actions\DownloadFolderAction;
 use App\Domain\Folder\DataTransferObjects\DownloadData;
 use App\Domain\Folder\DataTransferObjects\FolderData;
+use App\Livewire\FolderModal;
 use App\Support\Concerns\AssetTrait;
 use App\Support\Concerns\CustomFormatHelper;
 use App\Support\Concerns\CustomPagination;
@@ -347,12 +348,12 @@ class Document extends Page
                         break;
                     }
                 case 'edit': {
-                        $this->emitTo('filament.livewire.folder-modal', 'editFolder', $folder);
+                        $this->dispatch('editFolder', $folder)->to(FolderModal::class);
 
                         break;
                     }
                 case 'delete': {
-                        $this->emitTo('filament.livewire.folder-modal', 'deleteFolder', $folder);
+                        $this->dispatch('deleteFolder', $folder)->to(FolderModal::class);
                         break;
                     }
                 case 'move-to': {

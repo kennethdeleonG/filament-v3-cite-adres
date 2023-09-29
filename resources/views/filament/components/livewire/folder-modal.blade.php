@@ -34,22 +34,20 @@
                 {{ $this->form }}
             </div>
 
-            <x-slot name="footer">
-                <div class="filament-modal-actions flex flex-wrap items-center gap-4 rtl:space-x-reverse">
-                    <x-filament::button type="submit" wire:click="editAction" wire:loading.attr="disabled">
-                        <span wire:target="editAction" wire:loading.remove>
-                            Save
-                        </span>
-                        <span wire:target="editAction" wire:loading>
-                            Saving...
-                        </span>
-                    </x-filament::button>
-                    <x-filament::button type="button" color="secondary"
-                        x-on:click="$dispatch('close-modal', { id: 'edit-folder-modal-handle' })">
-                        Cancel
-                    </x-filament::button>
-                </div>
-            </x-slot>
+            <div class="text-right flex gap-4 justify-end">
+                <x-filament::button type="button" outlined color="gray"
+                    x-on:click="$dispatch('close-modal', { id: 'edit-folder-modal-handle' })">
+                    Cancel
+                </x-filament::button>
+                <x-filament::button type="submit" wire:click="editAction" wire:loading.attr="disabled">
+                    <span wire:target="editAction" wire:loading.remove>
+                        Save
+                    </span>
+                    <span wire:target="editAction" wire:loading>
+                        Saving...
+                    </span>
+                </x-filament::button>
+            </div>
         </form>
     </x-filament::modal>
 
@@ -60,17 +58,17 @@
         {{-- tricks to disable autofocus --}}
         <input type="text" hidden autofocus />
 
-        <x-slot name="header">
-            <x-filament::modal.heading class="mb-2">
+        <div class="text-center">
+            <x-filament::modal.heading class="mb-4">
                 Delete Folder
             </x-filament::modal.heading>
-            <x-filament::modal.subheading>
+            <x-filament::modal.description class="mt-4">
                 Are you sure you would like to do this?
-            </x-filament::modal.subheading>
-        </x-slot>
+            </x-filament::modal.description>
+        </div>
 
         <div class="text-right flex gap-2 justify-end">
-            <x-filament::button type="button" class="w-full" color="secondary"
+            <x-filament::button type="button" class="w-full" outlined color="gray"
                 x-on:click="$dispatch('close-modal', { id: 'delete-folder-modal-handle' })">
                 Cancel
             </x-filament::button>
@@ -96,7 +94,7 @@
                     Move {{ $folderName }} to:
                 </x-filament::modal.heading>
                 <div class="mb-2"> </div>
-                <x-filament::modal.subheading>
+                <x-filament::modal.description>
                     <div class="flex justify-start items-center">
                         @if (!is_null($this->navigateFolderId))
                             <div class="mr-2">
@@ -108,7 +106,7 @@
                             {{ $this->navigateFolderName }}
                         </div>
                     </div>
-                </x-filament::modal.subheading>
+                </x-filament::modal.description>
             </div>
         </x-slot>
 
