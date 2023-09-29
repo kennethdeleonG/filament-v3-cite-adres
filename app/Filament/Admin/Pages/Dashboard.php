@@ -61,7 +61,7 @@ class Dashboard extends BaseDashboard
 
         if ($asset) {
             return match ($action) {
-                'open' => redirect(route('filament.admin.resources.assets.edit', ['record' => $asset, 'ownerRecord' => $asset->folder ?? null])),
+                'open' => redirect(route('filament.admin.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder ?? null])),
                 'download' => app(DownloadSingleFileAction::class)->execute(
                     $asset,
                     DownloadData::fromArray(
@@ -75,7 +75,7 @@ class Dashboard extends BaseDashboard
                     )
                 ),
                 'delete' => $this->dispatch('deleteAsset', $asset)->to(AssetModal::class),
-                'edit' => redirect(route('filament.admin.resources.assets.edit', ['record' => $asset, 'ownerRecord' => $asset->folder])),
+                'edit' => redirect(route('filament.admin.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder])),
                 'move-to' => $this->dispatch('moveAssetToFolder', $asset)->to(AssetModal::class),
                 'show-history' => redirect(route('filament.admin.pages..documents.history.{subjectType?}.{subjectId?}', ['subjectType' => 'assets', 'subjectId' => $asset->id])),
                 default => null

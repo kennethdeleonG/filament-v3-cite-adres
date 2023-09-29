@@ -113,7 +113,7 @@ class Document extends Page
             NavigationItem::make(static::getNavigationLabel())
                 ->group(static::getNavigationGroup())
                 ->icon(static::getNavigationIcon())
-                ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.resources.assets.*')
+                ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.resources.documents.*')
                     || request()->routeIs("filament.admin.pages..documents.*"))
                 ->sort(static::getNavigationSort())
                 ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
@@ -205,11 +205,11 @@ class Document extends Page
                         $this->createFolder($data);
                     }),
                 Action::make('new-asset')
-                    ->label('New Asset')
+                    ->label('New Document')
                     ->action(function () {
                         $folder = FolderModel::find($this->folder_id);
 
-                        return redirect()->route('filament.admin.resources.assets.create', $folder);
+                        return redirect()->route('filament.admin.resources.documents.create', $folder);
                     }),
             ])
                 ->view('filament.components.custom-action-group.index')
@@ -382,7 +382,7 @@ class Document extends Page
 
         if ($asset) {
             return match ($action) {
-                'open' => redirect(route('filament.admin.resources.assets.edit', ['record' => $asset, 'ownerRecord' => $asset->folder ?? null])),
+                'open' => redirect(route('filament.admin.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder ?? null])),
                 'download' => app(DownloadSingleFileAction::class)->execute(
                     $asset,
                     DownloadData::fromArray(
@@ -396,7 +396,7 @@ class Document extends Page
                     )
                 ),
                 'delete' => $this->dispatch('deleteAsset', $asset)->to(AssetModal::class),
-                'edit' => redirect(route('filament.admin.resources.assets.edit', ['record' => $asset, 'ownerRecord' => $asset->folder])),
+                'edit' => redirect(route('filament.admin.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder])),
                 'move-to' => $this->dispatch('moveAssetToFolder', $asset)->to(AssetModal::class),
                 'show-history' => redirect(route('filament.admin.pages..documents.history.{subjectType?}.{subjectId?}', ['subjectType' => 'assets', 'subjectId' => $asset->id])),
                 default => null

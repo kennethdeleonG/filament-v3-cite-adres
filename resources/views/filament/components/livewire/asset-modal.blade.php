@@ -8,7 +8,7 @@
 
         <div class="text-center">
             <x-filament::modal.heading class="mb-4">
-                Delete Asset
+                Delete Document
             </x-filament::modal.heading>
             <x-filament::modal.description class="mt-4">
                 Are you sure you would like to do this?

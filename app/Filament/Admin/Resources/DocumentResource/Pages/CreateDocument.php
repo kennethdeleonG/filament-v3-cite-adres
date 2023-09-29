@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Filament\Admin\Resources\AssetResource\Pages;
+namespace App\Filament\Admin\Resources\DocumentResource\Pages;
 
 use App\Domain\Asset\Actions\CreateAssetAction;
 use App\Domain\Asset\DataTransferObjects\AssetData;
 use App\Domain\Folder\Models\Folder;
-use App\Filament\Admin\Resources\AssetResource;
+use App\Filament\Admin\Resources\DocumentResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Support\Enums\Alignment;
@@ -13,9 +13,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class CreateAsset extends CreateRecord
+class CreateDocument extends CreateRecord
 {
-    protected static string $resource = AssetResource::class;
+    protected static string $resource = DocumentResource::class;
+
+    protected ?string $heading = 'Create Document';
 
     public mixed $ownerRecord = null;
 

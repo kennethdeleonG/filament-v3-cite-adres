@@ -3,14 +3,14 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Domain\Asset\Models\Asset;
-use App\Filament\Admin\Resources\AssetResource\Pages;
+use App\Filament\Admin\Resources\DocumentResource\Pages;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Illuminate\Support\Str;
 
-class AssetResource extends Resource
+class DocumentResource extends Resource
 {
     protected static ?string $model = Asset::class;
 
@@ -91,7 +91,7 @@ class AssetResource extends Resource
     {
         return [
             'index' => Pages\ListAssets::route('/'),
-            'create' => Pages\CreateAsset::route('/file/create/{ownerRecord?}'),
+            'create' => Pages\CreateDocument::route('/file/create/{ownerRecord?}'),
             'edit' => Pages\EditAsset::route('/file/{record}/edit/{ownerRecord?}'),
         ];
     }
