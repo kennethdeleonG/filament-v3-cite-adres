@@ -68,13 +68,22 @@ class Syllabus extends Document
     /** @return LengthAwarePaginator<FolderModel> */
     public function getFolders(int $page = 1): LengthAwarePaginator
     {
-        $result = FolderModel::with(['descendants'])->where(function ($query) {
-            if ($this->folder_id) {
-                $query->where('folder_id', $this->folder_id);
-            } else {
-                $query->whereNull('folder_id');
-            }
-        })->orderBy('name')
+        $result = FolderModel::with(['descendants'])
+            ->where(function ($query) {
+                if ($this->folder_id) {
+                    $query->where('folder_id', $this->folder_id);
+                } else {
+                    $query->whereNull('folder_id');
+                }
+            })
+            ->where(function ($query) {
+                $query->where('author_type', UserType::FACULTY->value)
+                    ->where('author_id', auth()->user()->id);
+            })
+            ->orWhere(function ($query) {
+                $query->where('is_private', false)->where('folder_id', $this->folder_id);
+            })
+            ->orderBy('name')
             ->paginate(32, page: $page);
 
         return $result;

@@ -15,6 +15,7 @@ use App\Support\Concerns\AssetTrait;
 use App\Support\Concerns\CustomFormatHelper;
 use App\Support\Concerns\CustomPagination;
 use App\Support\Concerns\FolderTrait;
+use App\Support\Enums\UserType;
 use Filament\Pages\Page;
 use Filament\Forms;
 use Illuminate\Support\Facades\DB;
@@ -149,7 +150,15 @@ class Document extends Page
             } else {
                 $query->whereNull('folder_id');
             }
-        })->orderBy('name')
+        })
+            ->where(function ($query) {
+                $query->where('author_type', UserType::FACULTY->value)
+                    ->where('author_id', auth()->user()->id);
+            })
+            ->orWhere(function ($query) {
+                $query->where('is_private', false)->where('folder_id', $this->folder_id);
+            })
+            ->orderBy('name')
             ->paginate(32, page: $page);
 
         return $result;

@@ -76,7 +76,15 @@ class LessonPlan extends Document
             } else {
                 $query->whereNull('folder_id');
             }
-        })->orderBy('name')
+        })
+            ->where(function ($query) {
+                $query->where('author_type', UserType::FACULTY->value)
+                    ->where('author_id', auth()->user()->id);
+            })
+            ->orWhere(function ($query) {
+                $query->where('is_private', false)->where('folder_id', $this->folder_id);
+            })
+            ->orderBy('name')
             ->paginate(32, page: $page);
 
         return $result;
