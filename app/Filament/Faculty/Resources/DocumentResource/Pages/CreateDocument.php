@@ -6,6 +6,7 @@ use App\Domain\Asset\Actions\CreateAssetAction;
 use App\Domain\Asset\DataTransferObjects\AssetData;
 use App\Domain\Folder\Models\Folder;
 use App\Filament\Faculty\Resources\DocumentResource;
+use App\Support\Enums\UserType;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Support\Enums\Alignment;
@@ -40,6 +41,7 @@ class CreateDocument extends CreateRecord
         $data['folder_id'] = $this->ownerRecord ? $this->ownerRecord->id : null;
         $data['path'] = $this->ownerRecord ? $this->ownerRecord->path : '' . '/' . Str::slug($data['name']);
         $data['author_id'] = auth()->user()->id;
+        $data['author_type'] = UserType::FACULTY->value;
 
         return DB::transaction(
             fn () => app(CreateAssetAction::class)

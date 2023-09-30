@@ -13,6 +13,7 @@ class CreateAssetAction
     {
         $model = Asset::create([
             'author_id' => $asset->author_id,
+            'author_type' => $asset->author_type,
             'folder_id' => $asset->folder_id,
             'name' => $asset->name,
             'path' => $asset->path,

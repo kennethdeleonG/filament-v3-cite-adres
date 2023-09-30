@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('author_id')->nullable();
+            $table->string('author_type')->nullable();
             $table->unsignedBigInteger('folder_id')->nullable()->index();
             $table->string('name')->unique();
             $table->string('slug')->unique()->index();

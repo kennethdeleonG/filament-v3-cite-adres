@@ -24,6 +24,7 @@ class Asset extends Model implements IsActivitySubject
 
     protected $fillable = [
         'author_id',
+        'author_type',
         'folder_id',
         'name',
         'slug',
