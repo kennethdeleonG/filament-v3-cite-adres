@@ -28,6 +28,7 @@ class AssetModal extends Component implements HasForms
     public ?string $assetName = null;
     public ?int $previousFolderId = null;
     public ?int $navigateFolderId = null;
+    public bool $navigateRoot = true;
     public ?string $navigateFolderName = null;
 
     /** @var array */
@@ -66,7 +67,7 @@ class AssetModal extends Component implements HasForms
             $result = app(DeleteAssetAction::class)->execute($this->asset);
 
             if ($result) {
-                $this->dispatch('refreshPage', 'delete-asset', json_encode($recordToDelete))->to(Document::class);
+                $this->dispatch('refreshPage', 'delete-asset', json_encode($recordToDelete));
                 $this->dispatch('close-modal', id: 'delete-asset-modal-handle');
                 Notification::make()
                     ->title('Asset Deleted')
@@ -77,13 +78,19 @@ class AssetModal extends Component implements HasForms
     }
 
     // link to listener
-    public function moveAssetToFolderModal(array $data): void
+    public function moveAssetToFolderModal(array $data, int|null $folderIdParam): void
     {
         $assetModel = Asset::with('folder')->find($data['id']);
 
         $this->dispatch('open-modal', id: 'move-asset-modal-handle');
 
         $this->asset = $assetModel instanceof Asset ? $assetModel : null;
+
+        $this->navigateFolderId = $folderIdParam;
+
+        if (!is_null($folderIdParam)) {
+            $this->navigateRoot = false;
+        }
     }
 
     //moving of asset
@@ -147,7 +154,7 @@ class AssetModal extends Component implements HasForms
             ->execute($this->asset, $moveTo, $oldPath, $newPath);
 
         if ($result instanceof Asset) {
-            $this->dispatch('refreshPage', 'move-asset', json_encode($result))->to(Document::class);
+            $this->dispatch('refreshPage', 'move-asset', json_encode($result));
             $this->dispatch('close-modal', id: 'move-asset-modal-handle');
             Notification::make()
                 ->title('Asset Moved')

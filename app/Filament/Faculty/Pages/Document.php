@@ -398,7 +398,7 @@ class Document extends Page
                 ),
                 'delete' => $this->dispatch('deleteAsset', $asset)->to(AssetModal::class),
                 'edit' => redirect(route('filament.faculty.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder])),
-                'move-to' => $this->dispatch('moveAssetToFolder', $asset)->to(AssetModal::class),
+                'move-to' => $this->dispatch('moveAssetToFolder', $asset, $this->folder_id)->to(AssetModal::class),
                 'show-history' => redirect(route('filament.faculty.pages..history.{subjectType?}.{subjectId?}', ['subjectType' => 'assets', 'subjectId' => $asset->id])),
                 default => null
             };

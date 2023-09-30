@@ -47,7 +47,7 @@
                 <div class="mb-2"> </div>
                 <x-filament::modal.description>
                     <div class="flex justify-start items-center">
-                        @if (!is_null($this->navigateFolderId))
+                        @if ($this->navigateRoot)
                             <div class="mr-2" wire:click="navigateMove({{ $this->previousFolderId }})">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 cursor-pointer"
                                     fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
