@@ -4,11 +4,13 @@ namespace App\Filament\Faculty\Resources;
 
 use App\Domain\Asset\Models\Asset;
 use App\Filament\Faculty\Resources\DocumentResource\Pages;
+use App\Support\Enums\UserType;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 
 class DocumentResource extends Resource
 {
@@ -23,6 +25,20 @@ class DocumentResource extends Resource
     public static function getGloballySearchableAttributes(): array
     {
         return ['name', 'folder.name',];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = static::getModel()::query()
+            ->where(function ($query) {
+                $query->where('author_type', UserType::FACULTY->value)
+                    ->where('author_id', auth()->user()->id);
+            })
+            ->orWhere(function ($query) {
+                $query->where('is_private', false);
+            });
+
+        return $query;
     }
 
     public static function form(Form $form): Form
