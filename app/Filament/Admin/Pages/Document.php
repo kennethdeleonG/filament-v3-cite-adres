@@ -38,6 +38,8 @@ class Document extends Page
     use CustomPagination;
     use CustomFormatHelper;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public ?int $folder_id = null;
 
     protected ?string $heading = 'Documents';
@@ -91,13 +93,13 @@ class Document extends Page
         $truncatedParentFolderName = Str::limit($parentFolder->name, 20, '...');
         $crumbs[self::getUrl() . '/' . $parentFolder->id] = new HtmlString('<span title="' . $parentFolder->name . '">' . $truncatedParentFolderName . '</span>');
 
-        $rootMenu = [
-            self::getUrl() => trans('Root Directory'),
-        ];
+        // $rootMenu = [
+        //     self::getUrl() => trans('Root Directory'),
+        // ];
 
-        $mergedCrumbs = array_merge($rootMenu, $crumbs);
+        // $mergedCrumbs = array_merge($rootMenu, $crumbs);
 
-        return $mergedCrumbs;
+        return $crumbs;
     }
 
     public function getBreadcrumbs(): array
