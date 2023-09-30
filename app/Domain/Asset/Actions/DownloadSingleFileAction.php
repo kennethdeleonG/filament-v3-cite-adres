@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Asset\Actions;
 
 use App\Domain\Asset\Models\Asset;
+use App\Domain\Faculty\Models\Faculty;
 use App\Domain\Folder\DataTransferObjects\DownloadData;
 use App\Domain\Folder\Models\Folder;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -24,12 +25,14 @@ class DownloadSingleFileAction
                 $tmpDowloadLink = $downloadData->downloadlink;
             } else {
 
+                $url = auth()->user() instanceof Faculty ? '/faculty/documents/' : '/admin/documents/';
+
                 $tmpDowloadLink = URL::temporarySignedRoute(
                     'download.single-file',
                     now()->addMinutes(30),
                     [
                         'asset' => $asset->slug,
-                        'redirect' => url('/admin/documents/' . $asset->folder_id),
+                        'redirect' => url($url . $asset->folder_id),
                     ]
                 );
             }

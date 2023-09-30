@@ -76,4 +76,5 @@
             </tbody>
         </table>
     </div>
+
 </x-filament::page>

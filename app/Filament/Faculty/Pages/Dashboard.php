@@ -66,31 +66,57 @@ class Dashboard extends BaseDashboard
 
     public function mountActionAsset(string $action, int $assetId)
     {
-        // $asset = Asset::find($assetId);
+        $asset = Asset::find($assetId);
 
-        // if ($asset) {
-        //     return match ($action) {
-        //         'open' => redirect(route('filament.admin.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder ?? null])),
-        //         'download' => app(DownloadSingleFileAction::class)->execute(
-        //             $asset,
-        //             DownloadData::fromArray(
-        //                 [
-        //                     'files' => [$asset->file],
-        //                     'user_type' => 'admin',
-        //                     'admin_id' => auth()->user()?->id,
-        //                     'asset_type' => 'asset',
-        //                     'asset_id' => $asset->id,
-        //                 ]
-        //             )
-        //         ),
-        //         'delete' => $this->dispatch('deleteAsset', $asset)->to(AssetModal::class),
-        //         'edit' => redirect(route('filament.admin.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder])),
-        //         'move-to' => $this->dispatch('moveAssetToFolder', $asset)->to(AssetModal::class),
-        //         'show-history' => redirect(route('filament.admin.pages..documents.history.{subjectType?}.{subjectId?}', ['subjectType' => 'assets', 'subjectId' => $asset->id])),
-        //         default => null
-        //     };
-        // }
+        if ($asset) {
+            return match ($action) {
+                'open' => redirect(route('filament.faculty.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder ?? null])),
+                'download' => app(DownloadSingleFileAction::class)->execute(
+                    $asset,
+                    DownloadData::fromArray(
+                        [
+                            'files' => [$asset->file],
+                            'user_type' => 'faculty',
+                            'admin_id' => auth()->user()?->id,
+                            'asset_type' => 'asset',
+                            'asset_id' => $asset->id,
+                        ]
+                    )
+                ),
+                'delete' => $this->dispatch('deleteAsset', $asset)->to(AssetModal::class),
+                'edit' => redirect(route('filament.faculty.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder])),
+                'move-to' => $this->dispatch('moveAssetToFolder', $asset, null)->to(AssetModal::class),
+                'show-history' => redirect(route('filament.faculty.pages..history.{subjectType?}.{subjectId?}', ['subjectType' => 'assets', 'subjectId' => $asset->id])),
+                default => null
+            };
+        }
 
-        // return null;
+        return null;
+    }
+
+    public function getAssetActions(): array
+    {
+        return [
+            [
+                'action' => 'open',
+                'label' => 'Open',
+            ],
+            [
+                'action' => 'download',
+                'label' => 'Download',
+            ],
+            [
+                'action' => 'delete',
+                'label' => 'Delete',
+            ],
+            [
+                'action' => 'edit',
+                'label' => 'Edit',
+            ],
+            [
+                'action' => 'show-history',
+                'label' => 'Show History',
+            ],
+        ];
     }
 }
