@@ -5,10 +5,11 @@ namespace App\Filament\Faculty\Pages;
 use App\Domain\Asset\Actions\DownloadSingleFileAction;
 use App\Domain\Asset\Models\Asset;
 use App\Domain\Folder\DataTransferObjects\DownloadData;
-use App\Filament\Admin\Widgets\StatsOverview;
+use App\Filament\Faculty\Widgets\StatsOverview;
 use App\Support\Concerns\AssetTrait;
 use App\Support\Concerns\CustomFormatHelper;
 use App\Support\Concerns\FolderTrait;
+use App\Support\Enums\UserType;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -49,7 +50,15 @@ class Dashboard extends BaseDashboard
     /** @return LengthAwarePaginator<Asset> */
     public function getAssets(int $page = 1): LengthAwarePaginator
     {
-        $result = Asset::with('folder')->orderBy('created_at', 'desc')
+        $result = Asset::with('folder')
+            ->where(function ($query) {
+                $query->where('author_type', UserType::FACULTY->value)
+                    ->where('author_id', auth()->user()->id);
+            })
+            ->orWhere(function ($query) {
+                $query->where('is_private', false);
+            })
+            ->orderBy('created_at', 'desc')
             ->paginate(5, page: $page);
 
         return $result;
