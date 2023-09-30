@@ -210,7 +210,7 @@ class Document extends Page
                     ->action(function () {
                         $folder = FolderModel::find($this->folder_id);
 
-                        return redirect()->route('filament.admin.resources.documents.create', $folder);
+                        return redirect()->route('filament.faculty.resources.documents.create', $folder);
                     }),
             ])
                 ->view('filament.components.custom-action-group.index')
@@ -383,13 +383,13 @@ class Document extends Page
 
         if ($asset) {
             return match ($action) {
-                'open' => redirect(route('filament.admin.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder ?? null])),
+                'open' => redirect(route('filament.faculty.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder ?? null])),
                 'download' => app(DownloadSingleFileAction::class)->execute(
                     $asset,
                     DownloadData::fromArray(
                         [
                             'files' => [$asset->file],
-                            'user_type' => 'admin',
+                            'user_type' => 'faculty',
                             'admin_id' => auth()->user()?->id,
                             'asset_type' => 'asset',
                             'asset_id' => $asset->id,
@@ -397,9 +397,9 @@ class Document extends Page
                     )
                 ),
                 'delete' => $this->dispatch('deleteAsset', $asset)->to(AssetModal::class),
-                'edit' => redirect(route('filament.admin.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder])),
+                'edit' => redirect(route('filament.faculty.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder])),
                 'move-to' => $this->dispatch('moveAssetToFolder', $asset)->to(AssetModal::class),
-                'show-history' => redirect(route('filament.admin.pages..documents.history.{subjectType?}.{subjectId?}', ['subjectType' => 'assets', 'subjectId' => $asset->id])),
+                'show-history' => redirect(route('filament.faculty.pages..history.{subjectType?}.{subjectId?}', ['subjectType' => 'assets', 'subjectId' => $asset->id])),
                 default => null
             };
         }

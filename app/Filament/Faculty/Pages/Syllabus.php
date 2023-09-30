@@ -54,15 +54,15 @@ class Syllabus extends Document
         $this->folderCount = $folderQueryData->lastPage();
         $this->folderList = new Collection($folderQueryData->items());
 
-        // if (count($this->folderList) <= 16) {
-        //     $assetQueryData = $this->getAssets();
-        //     if (count($assetQueryData->items()) > 0) {
-        //         $this->assetCount = $assetQueryData->lastPage();
-        //     } else {
-        //         $this->assetCount = 0;
-        //     }
-        //     $this->assetList = new Collection($assetQueryData->items());
-        // }
+        if (count($this->folderList) <= 16) {
+            $assetQueryData = $this->getAssets();
+            if (count($assetQueryData->items()) > 0) {
+                $this->assetCount = $assetQueryData->lastPage();
+            } else {
+                $this->assetCount = 0;
+            }
+            $this->assetList = new Collection($assetQueryData->items());
+        }
     }
 
     /** @return LengthAwarePaginator<FolderModel> */

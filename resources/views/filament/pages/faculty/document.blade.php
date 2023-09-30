@@ -66,14 +66,13 @@
                         'actions' => $this->getFolderActions(),
                     ])
                 @endforeach
-                {{--
                 @foreach ($this->assetList as $asset)
                     @include('filament.components.document-table-body', [
                         'document' => $asset,
                         'type' => 'asset',
                         'actions' => $this->getAssetActions(),
                     ])
-                @endforeach --}}
+                @endforeach
             </tbody>
         </table>
     </div>
