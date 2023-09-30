@@ -12,25 +12,27 @@ use App\Support\Enums\UserType;
 use Illuminate\Support\Str;
 use Filament\Notifications\Notification;
 
-class Syllabus extends Document
+class LectureSlide extends Document
 {
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
 
     protected static bool $shouldRegisterNavigation = true;
 
     public ?int $folder_id = null;
 
-    protected ?string $heading = 'Syllabus';
+    protected ?string $heading = 'Lecture Slides';
+
+    protected static ?string $navigationLabel = 'Lecture Slides';
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationGroup = 'Documents';
 
-    protected static ?string $slug = '/syllabus/{folderId?}';
+    protected static ?string $slug = '/lecture-slide/{folderId?}';
 
     public function mount(string $folderId = null): void
     {
-        $this->folder_id = $folderId == null ? 1 : intval($folderId);
+        $this->folder_id = $folderId == null ? 3 : intval($folderId);
 
         $this->fetchData();
     }
@@ -41,7 +43,7 @@ class Syllabus extends Document
             NavigationItem::make(static::getNavigationLabel())
                 ->group(static::getNavigationGroup())
                 ->icon(static::getNavigationIcon())
-                ->isActiveWhen(fn (): bool => request()->routeIs("filament.faculty.pages..syllabus.*"))
+                ->isActiveWhen(fn (): bool => request()->routeIs("filament.faculty.pages..lecture-slide.*"))
                 ->sort(static::getNavigationSort())
                 ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
                 ->url(static::getNavigationUrl()),
