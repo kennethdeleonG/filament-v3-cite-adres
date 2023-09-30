@@ -24,6 +24,7 @@ class Folder extends Model implements IsActivitySubject
     protected $fillable = [
         'uuid',
         'author_id',
+        'author_type',
         'folder_id',
         'slug',
         'name',

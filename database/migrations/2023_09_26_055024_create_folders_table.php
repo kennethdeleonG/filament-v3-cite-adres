@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->uuid()->unique();
             $table->unsignedInteger('author_id')->nullable();
+            $table->string('author_type')->nullable();
             $table->unsignedInteger('folder_id')->nullable();
             $table->unsignedInteger('_lft');
             $table->unsignedInteger('_rgt');

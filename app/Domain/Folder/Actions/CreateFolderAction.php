@@ -16,6 +16,7 @@ class CreateFolderAction
             $folder = Folder::create([
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => $folderData->author_id,
+                'author_type' => $folderData->author_type,
                 'folder_id' => $folderData->folder_id,
                 'name' => $folderData->name,
                 'slug' => $folderData->slug,
@@ -36,6 +37,7 @@ class CreateFolderAction
             $folder = Folder::create([
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => $folderData->author_id,
+                'author_type' => $folderData->author_type,
                 'name' => $folderData->name,
                 'slug' => $folderData->slug,
                 'path' => $folderData->path,
