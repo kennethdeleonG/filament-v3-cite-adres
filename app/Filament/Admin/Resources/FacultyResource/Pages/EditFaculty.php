@@ -29,7 +29,6 @@ class EditFaculty extends EditRecord
      */
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        dd($data);
         return DB::transaction(
             fn () => app(UpdateFacultyAction::class)
                 ->execute($record, FacultyData::fromArray($data))
