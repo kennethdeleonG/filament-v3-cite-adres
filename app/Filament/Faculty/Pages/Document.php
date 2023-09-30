@@ -181,24 +181,24 @@ class Document extends Page
                     ->modalWidth('md')
                     ->form([
                         Forms\Components\TextInput::make('name')
-                            ->label('')
-                            ->dehydrateStateUsing(function ($state) {
-                                if ($this->folder_id == 0) {
-                                    $existingRecords = DB::table('folders')->where('name', 'LIKE', $state . '%')->whereNull('folder_id')->count();
-                                    if ($existingRecords > 0) {
-                                        return $state . ' - (' . $existingRecords . ')';
-                                    }
+                            ->label(''),
+                        // ->dehydrateStateUsing(function ($state) {
+                        //     if ($this->folder_id == 0) {
+                        //         $existingRecords = DB::table('folders')->where('name', 'LIKE', $state . '%')->whereNull('folder_id')->count();
+                        //         if ($existingRecords > 0) {
+                        //             return $state . ' - (' . $existingRecords . ')';
+                        //         }
 
-                                    return $state;
-                                } else {
-                                    $existingRecords = DB::table('folders')->where('name', 'LIKE', $state . '%')->where('folder_id', $this->folder_id)->count();
-                                    if ($existingRecords > 0) {
-                                        return $state . ' - (' . $existingRecords . ')';
-                                    }
+                        //         return $state;
+                        //     } else {
+                        //         $existingRecords = DB::table('folders')->where('name', 'LIKE', $state . '%')->where('folder_id', $this->folder_id)->count();
+                        //         if ($existingRecords > 0) {
+                        //             return $state . ' - (' . $existingRecords . ')';
+                        //         }
 
-                                    return $state;
-                                }
-                            }),
+                        //         return $state;
+                        //     }
+                        // }),
                         Forms\Components\Toggle::make('is_private')->label('Private')->default(false),
                     ])
                     ->modalFooterActionsAlignment('right')
@@ -361,12 +361,12 @@ class Document extends Page
                         break;
                     }
                 case 'move-to': {
-                        $this->dispatch('moveFolder', $folder)->to(FolderModal::class);
+                        $this->dispatch('moveFolder', $folder, $this->folder_id)->to(FolderModal::class);
 
                         break;
                     }
                 case 'show-history': {
-                        redirect(route('filament.admin.pages..documents.history.{subjectType?}.{subjectId?}', ['subjectType' => 'folders', 'subjectId' => $folder->id]));
+                        redirect(route('filament.faculty.pages..history.{subjectType?}.{subjectId?}', ['subjectType' => 'folders', 'subjectId' => $folder->id]));
 
                         break;
                     }

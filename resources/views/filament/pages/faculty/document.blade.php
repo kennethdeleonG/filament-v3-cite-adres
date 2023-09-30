@@ -78,6 +78,6 @@
         </table>
     </div>
 
-    {{-- @livewire('folder-modal')
-    @livewire('asset-modal', ['folderId' => "$this->folder_id"]) --}}
+    @livewire('folder-modal')
+    {{-- @livewire('asset-modal', ['folderId' => "$this->folder_id"]) --}}
 </x-filament-panels::page>

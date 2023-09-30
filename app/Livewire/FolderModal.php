@@ -26,6 +26,8 @@ class FolderModal extends Component implements HasForms
     public ?int $folderId = null;
     public ?string $folderName = null;
     public ?int $navigateFolderId = null;
+    public bool $navigateRoot = true;
+    public ?int $initialFolderIdParam = null;
     public ?string $navigateFolderName = null;
     public ?int $previousFolderId = null;
     public ?int $parentId = null;
@@ -114,7 +116,7 @@ class FolderModal extends Component implements HasForms
                 ->execute($this->folder, FolderData::fromArray($data));
 
             if ($result instanceof Folder) {
-                $this->dispatch('refreshPage', 'update', json_encode($result))->to(Document::class);
+                $this->dispatch('refreshPage', 'update', json_encode($result));
                 $this->dispatch('close-modal', id: 'edit-folder-modal-handle');
                 Notification::make()
                     ->title('Folder Updated')
@@ -147,7 +149,7 @@ class FolderModal extends Component implements HasForms
             $result = app(DeleteFolderAction::class)->execute($this->folder);
 
             if ($result) {
-                $this->dispatch('refreshPage', 'delete', json_encode($recordToDelete))->to(Document::class);
+                $this->dispatch('refreshPage', 'delete', json_encode($recordToDelete));
                 $this->dispatch('close-modal', id: 'delete-folder-modal-handle');
                 Notification::make()
                     ->title('Folder Deleted')
@@ -158,7 +160,7 @@ class FolderModal extends Component implements HasForms
     }
 
     //move listener
-    public function moveFolderModal(array $data): void
+    public function moveFolderModal(array $data, int|null $folderIdParam): void
     {
         $folderModel = Folder::with('assets')->find($data['id']);
 
@@ -166,6 +168,12 @@ class FolderModal extends Component implements HasForms
         $this->folder = $folderModel instanceof Folder ? $folderModel : null;
         $this->folderName = $folderModel instanceof Folder ? $folderModel->name : null;
         $this->folderId = $folderModel instanceof Folder ? $folderModel->id : null;
+
+        $this->navigateFolderId = $folderIdParam;
+
+        if (!is_null($folderIdParam)) {
+            $this->navigateRoot = false;
+        }
     }
 
     //moving of folder
@@ -237,7 +245,7 @@ class FolderModal extends Component implements HasForms
                 ->execute($this->folder, FolderData::fromArray($data));
 
             if ($result instanceof Folder) {
-                $this->dispatch('refreshPage', 'move', json_encode($result))->to(Document::class);
+                $this->dispatch('refreshPage', 'move', json_encode($result));
                 $this->dispatch('close-modal', id: 'move-folder-modal-handle');
                 Notification::make()
                     ->title('Folder Moved')

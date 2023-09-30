@@ -39,7 +39,7 @@
                     x-on:click="$dispatch('close-modal', { id: 'edit-folder-modal-handle' })">
                     Cancel
                 </x-filament::button>
-                <x-filament::button type="submit" wire:click="editAction" wire:loading.attr="disabled">
+                <x-filament::button type="button" wire:click="editAction" wire:loading.attr="disabled">
                     <span wire:target="editAction" wire:loading.remove>
                         Save
                     </span>
@@ -72,7 +72,7 @@
                 x-on:click="$dispatch('close-modal', { id: 'delete-folder-modal-handle' })">
                 Cancel
             </x-filament::button>
-            <x-filament::button type="submit" class="w-full" wire:click="deleteAction" color="danger"
+            <x-filament::button type="button" class="w-full" wire:click="deleteAction" color="danger"
                 wire:loading.attr="disabled">
                 <span wire:target="deleteAction" wire:loading.remove>
                     Confirm
@@ -96,7 +96,7 @@
                 <div class="mb-2"> </div>
                 <x-filament::modal.description>
                     <div class="flex justify-start items-center">
-                        @if (!is_null($this->navigateFolderId))
+                        @if ($this->navigateRoot)
                             <div class="mr-2">
                                 <x-heroicon-o-arrow-left class="h-5 cursor-pointer"
                                     wire:click="navigateMove({{ $this->previousFolderId }})" />
@@ -141,7 +141,7 @@
         </div>
 
         <div wire:loading.remove wire:target="navigateMove" class="text-right flex gap-2 justify-end">
-            <x-filament::button type="submit" wire:loading.attr="disabled"
+            <x-filament::button type="button" wire:loading.attr="disabled"
                 wire:click="moveFolder({{ $this->navigateFolderId }})">
                 <span wire:loading.remove wire:target="moveFolder">
                     Move Here
