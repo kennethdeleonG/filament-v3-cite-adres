@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Domain\Faculty\Models\Faculty;
 use App\Filament\Admin\Resources\ActivityResource\Pages\ListActivities;
 use App\Filament\Admin\Resources\ActivityResource\Pages\ViewActivity;
 use Filament\Tables;
@@ -10,6 +11,7 @@ use Filament\Forms;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\Resource;
 use Spatie\Activitylog\Models\Activity;
+use Illuminate\Support\Str;
 
 class ActivityResource extends Resource
 {
@@ -37,12 +39,25 @@ class ActivityResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('causer_type')
                     ->label(__('filament-spatie-activitylog::activity.causer_type'))
+                    ->formatStateUsing(function ($state) {
+                        return $state === 'App\Domain\Faculty\Models\Faculty' ? 'Faculty' : 'Admin';
+                    })
                     ->columnSpan([
                         'default' => 2,
                         'sm' => 1,
                     ]),
                 Forms\Components\TextInput::make('causer_id')
-                    ->label(__('filament-spatie-activitylog::activity.causer_id'))
+                    ->label('Causer Name')
+                    ->formatStateUsing(function ($record) {
+                        if ($record->causer_type === 'App\Domain\Faculty\Models\Faculty') {
+                            $faculty = Faculty::find(intval($record->causer_id));
+                            $name = Str::headline($faculty ? $faculty->first_name : '') . ' ' . Str::headline($faculty ? $faculty->last_name : '');
+
+                            return $name;
+                        } else {
+                            return 'Admin';
+                        }
+                    })
                     ->columnSpan([
                         'default' => 2,
                         'sm' => 1,

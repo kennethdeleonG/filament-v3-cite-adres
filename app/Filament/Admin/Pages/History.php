@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Pages;
 
 use App\Domain\Asset\Models\Asset;
+use App\Domain\Faculty\Models\Faculty;
 use App\Domain\Folder\Models\Folder;
 use App\Models\User;
 use Filament\Pages\Page;
@@ -94,12 +95,8 @@ class History extends Page implements HasTable
                 ->form([
                     Forms\Components\TextInput::make('causer_type')
                         ->label(__('filament-spatie-activitylog::activity.causer_type'))
-                        ->formatStateUsing(function (string|null $state): string {
-                            if (!$state) {
-                                $state = 'System';
-                            }
-
-                            return $state;
+                        ->formatStateUsing(function ($state) {
+                            return $state === 'App\Domain\Faculty\Models\Faculty' ? 'Faculty' : 'Admin';
                         })
                         ->columnSpan([
                             'default' => 2,
@@ -107,14 +104,15 @@ class History extends Page implements HasTable
                         ]),
                     Forms\Components\TextInput::make('causer_id')
                         ->label('Causer Name')
-                        ->formatStateUsing(function (string|null $state): string {
-                            if (!$state) {
-                                return 'System';
-                            }
-                            $user = User::find(intval($state));
-                            $name = Str::headline($user ? $user->first_name : '') . ' ' . Str::headline($user ? $user->last_name : '');
+                        ->formatStateUsing(function ($record) {
+                            if ($record->causer_type === 'App\Domain\Faculty\Models\Faculty') {
+                                $faculty = Faculty::find(intval($record->causer_id));
+                                $name = Str::headline($faculty ? $faculty->first_name : '') . ' ' . Str::headline($faculty ? $faculty->last_name : '');
 
-                            return $name;
+                                return $name;
+                            } else {
+                                return 'Admin';
+                            }
                         })
                         ->columnSpan([
                             'default' => 2,
@@ -122,6 +120,9 @@ class History extends Page implements HasTable
                         ]),
                     Forms\Components\TextInput::make('subject_type')
                         ->label(__('filament-spatie-activitylog::activity.subject_type'))
+                        ->formatStateUsing(function ($state) {
+                            return $state === 'App\Domain\Asset\Models\Asset' ? 'Document' : 'Folder';
+                        })
                         ->columnSpan([
                             'default' => 2,
                             'sm' => 1,
