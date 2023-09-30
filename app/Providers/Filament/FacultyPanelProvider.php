@@ -48,6 +48,21 @@ class FacultyPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->colors([
+                'primary' => [
+                    50 => "#803333",
+                    100 => "#803333",
+                    200 => "#803333",
+                    300 => "#803333",
+                    400 => "#803333",
+                    500 => "#803333",
+                    600 => "#803333",
+                    700 => "#803333",
+                    800 => "#803333",
+                    900 => "#803333",
+                    950 => "#803333",
+                ],
+            ])
             ->navigationGroups([
                 NavigationGroup::make()
                     ->label('Documents'),

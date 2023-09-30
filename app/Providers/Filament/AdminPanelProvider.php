@@ -45,6 +45,9 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->colors([
+                'primary' => Color::Teal,
+            ])
             ->navigationGroups([
                 NavigationGroup::make()
                     ->label('Documents'),
