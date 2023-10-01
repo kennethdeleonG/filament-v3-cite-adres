@@ -13,7 +13,7 @@ class FolderSeeder extends Seeder
     public function run(): void
     {
         $folderData = [
-            // Syllabus
+            // Syllabus 1
             [
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => null,
@@ -24,7 +24,7 @@ class FolderSeeder extends Seeder
                 'path' => '/syllabus',
                 'is_private' => false,
             ],
-            // Lesson Plans
+            // Lesson Plans 2 
             [
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => null,
@@ -35,7 +35,7 @@ class FolderSeeder extends Seeder
                 'path' => '/lesson-plans',
                 'is_private' => false,
             ],
-            // Lecture Slides
+            // Lecture Slides 3 
             [
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => null,
@@ -46,7 +46,7 @@ class FolderSeeder extends Seeder
                 'path' => '/lecture-slides',
                 'is_private' => false,
             ],
-            // Assignments
+            // Assignments 4
             [
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => null,
@@ -57,7 +57,7 @@ class FolderSeeder extends Seeder
                 'path' => '/assignments',
                 'is_private' => false,
             ],
-            // Exams & Quizzes
+            // Exams & Quizzes 5 
             [
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => null,
@@ -68,7 +68,7 @@ class FolderSeeder extends Seeder
                 'path' => '/exams-quizzes',
                 'is_private' => false,
             ],
-            // Lab Exercises
+            // Lab Exercises 6
             [
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => null,
@@ -79,7 +79,7 @@ class FolderSeeder extends Seeder
                 'path' => '/lab-exercises',
                 'is_private' => false,
             ],
-            // Reading Materials
+            // Reading Materials 7
             [
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => null,
@@ -90,7 +90,7 @@ class FolderSeeder extends Seeder
                 'path' => '/reading-materials',
                 'is_private' => false,
             ],
-            // Code Samples
+            // Code Samples 8
             [
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => null,
@@ -101,7 +101,7 @@ class FolderSeeder extends Seeder
                 'path' => '/code-samples',
                 'is_private' => false,
             ],
-            // Reference Guides
+            // Reference Guides 9 
             [
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => null,
@@ -112,7 +112,7 @@ class FolderSeeder extends Seeder
                 'path' => '/reference-guides',
                 'is_private' => false,
             ],
-            // Grading Sheets
+            // Grading Sheets 10
             [
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => null,
@@ -123,7 +123,7 @@ class FolderSeeder extends Seeder
                 'path' => '/grading-sheets',
                 'is_private' => false,
             ],
-            // Rubrics
+            // Rubrics 11
             [
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => null,
@@ -134,7 +134,7 @@ class FolderSeeder extends Seeder
                 'path' => '/rubrics',
                 'is_private' => false,
             ],
-            // Subjects
+            // Subjects 12
             [
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => null,
