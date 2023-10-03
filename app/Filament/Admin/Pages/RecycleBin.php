@@ -74,7 +74,7 @@ class RecycleBin extends Page
     {
         $result = Folder::onlyTrashed()
             ->where(function ($query) {
-                $query->where('author_type', UserType::ADMIN->value)
+                $query->whereNull('author_type')
                     ->where('author_id', auth()->user()->id);
             })
             ->orderBy('deleted_at')
@@ -101,7 +101,7 @@ class RecycleBin extends Page
     {
         $result = Asset::onlyTrashed()
             ->where(function ($query) {
-                $query->where('author_type', UserType::ADMIN->value)
+                $query->whereNull('author_type')
                     ->where('author_id', auth()->user()->id);
             })
             ->orderBy('name')
