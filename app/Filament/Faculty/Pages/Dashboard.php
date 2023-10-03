@@ -6,6 +6,7 @@ use App\Domain\Asset\Actions\DownloadSingleFileAction;
 use App\Domain\Asset\Models\Asset;
 use App\Domain\Folder\DataTransferObjects\DownloadData;
 use App\Filament\Faculty\Widgets\StatsOverview;
+use App\Livewire\AssetModal;
 use App\Support\Concerns\AssetTrait;
 use App\Support\Concerns\CustomFormatHelper;
 use App\Support\Concerns\FolderTrait;

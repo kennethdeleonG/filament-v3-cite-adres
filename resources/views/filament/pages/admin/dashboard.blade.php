@@ -77,4 +77,5 @@
         </table>
     </div>
 
+    @livewire('asset-modal', ['folderId' => null])
 </x-filament::page>
