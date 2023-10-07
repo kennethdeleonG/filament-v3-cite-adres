@@ -69,6 +69,25 @@ class AccountSettings extends Page
                         ->label('Designation')
                         ->maxLength(100),
                 ]),
+                Forms\Components\Section::make('Change Password')
+                    ->schema([
+                        Forms\Components\Group::make([
+                            Forms\Components\TextInput::make('password')
+                                ->required()
+                                ->password()
+                                ->label('Password')
+                                ->maxLength(20)
+                                ->minLength(8)
+                                ->confirmed(),
+                            Forms\Components\TextInput::make('password_confirmation')
+                                ->required()
+                                ->password()
+                                ->label('Confirm Password')
+                                ->maxLength(20)
+                                ->minLength(8)
+                                ->dehydrated(false),
+                        ])->columns(2)
+                    ])
             ])->statePath('data');
     }
 
