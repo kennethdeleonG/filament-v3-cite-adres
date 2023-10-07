@@ -37,9 +37,14 @@ class LessonPlan extends Document
         $this->fetchData();
     }
 
+    public function getFileLabel()
+    {
+        return "Lesson Plan";
+    }
+
     public function getDocumentLabel()
     {
-        return "New Lesson Plan";
+        return "New " . $this->getFileLabel();
     }
 
     public static function getNavigationItems(): array

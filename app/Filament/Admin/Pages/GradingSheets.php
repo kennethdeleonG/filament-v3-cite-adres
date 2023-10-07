@@ -37,9 +37,14 @@ class GradingSheets extends Document
         $this->fetchData();
     }
 
+    public function getFileLabel()
+    {
+        return "Grading Sheet";
+    }
+
     public function getDocumentLabel()
     {
-        return "New Grading Sheet";
+        return "New " . $this->getFileLabel();
     }
 
     public static function getNavigationItems(): array

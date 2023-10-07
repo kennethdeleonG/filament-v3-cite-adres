@@ -37,9 +37,14 @@ class CodeSamples extends Document
         $this->fetchData();
     }
 
+    public function getFileLabel()
+    {
+        return "Code Sample";
+    }
+
     public function getDocumentLabel()
     {
-        return "New Code Sample";
+        return "New " . $this->getFileLabel();
     }
 
     public static function getNavigationItems(): array

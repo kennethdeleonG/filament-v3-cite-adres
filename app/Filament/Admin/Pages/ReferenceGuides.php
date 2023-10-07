@@ -37,11 +37,15 @@ class ReferenceGuides extends Document
         $this->fetchData();
     }
 
-    public function getDocumentLabel()
+    public function getFileLabel()
     {
-        return "New Reference";
+        return "Reference";
     }
 
+    public function getDocumentLabel()
+    {
+        return "New " . $this->getFileLabel();
+    }
 
     public static function getNavigationItems(): array
     {

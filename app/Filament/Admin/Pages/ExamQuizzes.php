@@ -37,9 +37,14 @@ class ExamQuizzes extends Document
         $this->fetchData();
     }
 
+    public function getFileLabel()
+    {
+        return "Exam/Quiz";
+    }
+
     public function getDocumentLabel()
     {
-        return "New Exam/Quiz";
+        return "New " . $this->getFileLabel();
     }
 
     public static function getNavigationItems(): array
