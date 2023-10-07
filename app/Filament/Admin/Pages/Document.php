@@ -182,24 +182,7 @@ class Document extends Page
                     ->modalWidth('md')
                     ->form([
                         Forms\Components\TextInput::make('name')
-                            ->label('')
-                            ->dehydrateStateUsing(function ($state) {
-                                if ($this->folder_id == 0) {
-                                    $existingRecords = DB::table('folders')->where('name', 'LIKE', $state . '%')->whereNull('folder_id')->count();
-                                    if ($existingRecords > 0) {
-                                        return $state . ' - (' . $existingRecords . ')';
-                                    }
-
-                                    return $state;
-                                } else {
-                                    $existingRecords = DB::table('folders')->where('name', 'LIKE', $state . '%')->where('folder_id', $this->folder_id)->count();
-                                    if ($existingRecords > 0) {
-                                        return $state . ' - (' . $existingRecords . ')';
-                                    }
-
-                                    return $state;
-                                }
-                            }),
+                            ->label(''),
                         Forms\Components\Toggle::make('is_private')->label('Private')->default(true),
                     ])
                     ->modalFooterActionsAlignment('right')
