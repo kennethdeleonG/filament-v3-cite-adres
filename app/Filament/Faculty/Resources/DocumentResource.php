@@ -97,7 +97,7 @@ class DocumentResource extends Resource
                         ->hidden(fn ($get) => $get('file') ? false : true),
                     Forms\Components\Hidden::make('size'),
                     Forms\Components\Hidden::make('file_type'),
-                    Forms\Components\Toggle::make('is_private')->label('Private')->default(false),
+                    Forms\Components\Toggle::make('is_private')->label('Private')->default(true),
                 ]),
 
             ]);

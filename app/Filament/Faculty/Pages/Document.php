@@ -208,7 +208,7 @@ class Document extends Page
                         //         return $state;
                         //     }
                         // }),
-                        Forms\Components\Toggle::make('is_private')->label('Private')->default(false),
+                        Forms\Components\Toggle::make('is_private')->label('Private')->default(true),
                     ])
                     ->modalFooterActionsAlignment('right')
                     ->action(function (array $data) {
