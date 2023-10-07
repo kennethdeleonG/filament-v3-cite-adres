@@ -91,8 +91,8 @@ class DocumentResource extends Resource
     {
         return [
             'index' => Pages\ListAssets::route('/'),
-            'create' => Pages\CreateDocument::route('/file/create/{ownerRecord?}'),
-            'edit' => Pages\EditAsset::route('/file/{record}/edit/{ownerRecord?}'),
+            'create' => Pages\CreateDocument::route('/file/create/{ownerRecord?}/{label?}'),
+            'edit' => Pages\EditAsset::route('/file/{record}/edit/{ownerRecord?}/{label?}'),
         ];
     }
 }

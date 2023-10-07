@@ -23,11 +23,38 @@ class CreateDocument extends CreateRecord
 
     public static string | Alignment $formActionsAlignment = Alignment::Right;
 
-    public function mount(string $ownerRecord = ''): void
+    public function mount(string $ownerRecord = '', string $label = ''): void
     {
         $this->ownerRecord = app(Folder::class)->resolveRouteBinding($ownerRecord);
 
+        $this->heading = $label;
+
         parent::mount();
+    }
+
+    public function hydrate()
+    {
+        $components = request()->input('components', []);
+
+        if (isset($components[0]['snapshot'])) {
+            $snapshotData = json_decode($components[0]['snapshot'], true);
+
+            $path = $snapshotData['memo']['path'];
+
+            $pathSegments = explode('/', $path);
+
+            $value = end($pathSegments);
+
+            $this->heading = $value;
+        }
+    }
+
+    public function getBreadcrumbs(): array
+    {
+        return [
+            $this->heading,
+            "Create",
+        ];
     }
 
     public static function canCreateAnother(): bool
@@ -51,6 +78,13 @@ class CreateDocument extends CreateRecord
     {
         $resource = static::getResource();
 
-        return $resource::getUrl('edit', [$this->record, $this->ownerRecord]);
+        return $resource::getUrl(
+            'edit',
+            [
+                $this->record,
+                $this->ownerRecord,
+                'label' => $this->heading
+            ]
+        );
     }
 }
