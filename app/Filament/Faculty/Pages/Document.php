@@ -219,7 +219,10 @@ class Document extends Page
                     ->action(function () {
                         $folder = FolderModel::find($this->folder_id);
 
-                        return redirect()->route('filament.faculty.resources.documents.create', $folder);
+                        return redirect()->route(
+                            'filament.faculty.resources.documents.create',
+                            ['ownerRecord' => $folder, 'label' => $this->getFileLabel()]
+                        );
                     }),
             ])
                 ->view('filament.components.custom-action-group.index')
@@ -227,9 +230,14 @@ class Document extends Page
         ];
     }
 
+    public function getFileLabel()
+    {
+        return "Document";
+    }
+
     public function getDocumentLabel()
     {
-        return "New Document";
+        return "New " . $this->getFileLabel();
     }
 
     public function createFolder(array $data): void
@@ -397,7 +405,14 @@ class Document extends Page
 
         if ($asset) {
             return match ($action) {
-                'open' => redirect(route('filament.faculty.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder ?? null])),
+                'open' => redirect(route(
+                    'filament.faculty.resources.documents.edit',
+                    [
+                        'record' => $asset,
+                        'ownerRecord' => $asset->folder ?? null,
+                        'label' => $this->getFileLabel()
+                    ]
+                )),
                 'download' => app(DownloadSingleFileAction::class)->execute(
                     $asset,
                     DownloadData::fromArray(
@@ -411,7 +426,14 @@ class Document extends Page
                     )
                 ),
                 'delete' => $this->dispatch('deleteAsset', $asset)->to(AssetModal::class),
-                'edit' => redirect(route('filament.faculty.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder])),
+                'edit' => redirect(route(
+                    'filament.faculty.resources.documents.edit',
+                    [
+                        'record' => $asset,
+                        'ownerRecord' => $asset->folder,
+                        'label' => $this->getFileLabel()
+                    ]
+                )),
                 'move-to' => $this->dispatch('moveAssetToFolder', $asset, $this->folder_id)->to(AssetModal::class),
                 'show-history' => redirect(route('filament.faculty.pages..history.{subjectType?}.{subjectId?}', ['subjectType' => 'assets', 'subjectId' => $asset->id])),
                 default => null

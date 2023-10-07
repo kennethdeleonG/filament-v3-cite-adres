@@ -35,9 +35,14 @@ class Syllabus extends Document
         $this->fetchData();
     }
 
+    public function getFileLabel()
+    {
+        return "Syllabus";
+    }
+
     public function getDocumentLabel()
     {
-        return "New Syllabus";
+        return "New " . $this->getFileLabel();
     }
 
     public static function getNavigationItems(): array
