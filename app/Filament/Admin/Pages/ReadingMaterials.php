@@ -37,6 +37,11 @@ class ReadingMaterials extends Document
         $this->fetchData();
     }
 
+    public function getDocumentLabel()
+    {
+        return "New Reading Material";
+    }
+
     public static function getNavigationItems(): array
     {
         return [

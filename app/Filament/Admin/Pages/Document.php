@@ -207,7 +207,7 @@ class Document extends Page
                         $this->createFolder($data);
                     }),
                 Action::make('new-asset')
-                    ->label('New Document')
+                    ->label($this->getDocumentLabel())
                     ->action(function () {
                         $folder = FolderModel::find($this->folder_id);
 
@@ -217,6 +217,11 @@ class Document extends Page
                 ->view('filament.components.custom-action-group.index')
                 ->label('Create New'),
         ];
+    }
+
+    public function getDocumentLabel()
+    {
+        return "New Document";
     }
 
     public function createFolder(array $data): void

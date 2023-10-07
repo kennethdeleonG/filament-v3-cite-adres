@@ -37,6 +37,12 @@ class ReferenceGuides extends Document
         $this->fetchData();
     }
 
+    public function getDocumentLabel()
+    {
+        return "New Reference";
+    }
+
+
     public static function getNavigationItems(): array
     {
         return [
