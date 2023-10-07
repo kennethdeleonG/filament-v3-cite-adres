@@ -37,6 +37,11 @@ class Subjects extends Document
         $this->fetchData();
     }
 
+    public function getDocumentLabel()
+    {
+        return "New Subject";
+    }
+
     public static function getNavigationItems(): array
     {
         return [

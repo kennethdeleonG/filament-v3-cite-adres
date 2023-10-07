@@ -37,6 +37,11 @@ class LabExercises extends Document
         $this->fetchData();
     }
 
+    public function getDocumentLabel()
+    {
+        return "New Lab Exercise";
+    }
+
     public static function getNavigationItems(): array
     {
         return [

@@ -37,6 +37,11 @@ class LectureSlide extends Document
         $this->fetchData();
     }
 
+    public function getDocumentLabel()
+    {
+        return "New Lecture Slide";
+    }
+
     public static function getNavigationItems(): array
     {
         return [

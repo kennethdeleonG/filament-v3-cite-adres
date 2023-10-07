@@ -23,7 +23,7 @@ class StatsOverview extends BaseWidget
 
 
         return [
-            Stat::make('Faculties', $facultyCount),
+            Stat::make('Faculty', $facultyCount),
             Stat::make('Documents', $assetCount),
             Stat::make('Recycle Bin', $deletedAssetCount),
         ];

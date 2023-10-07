@@ -37,6 +37,11 @@ class ExamQuizzes extends Document
         $this->fetchData();
     }
 
+    public function getDocumentLabel()
+    {
+        return "New Exam/Quiz";
+    }
+
     public static function getNavigationItems(): array
     {
         return [

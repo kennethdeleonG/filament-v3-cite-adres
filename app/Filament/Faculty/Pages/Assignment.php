@@ -37,6 +37,11 @@ class Assignment extends Document
         $this->fetchData();
     }
 
+    public function getDocumentLabel()
+    {
+        return "New Assignment";
+    }
+
     public static function getNavigationItems(): array
     {
         return [
