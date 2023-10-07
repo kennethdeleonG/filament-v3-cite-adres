@@ -18,6 +18,10 @@ class FacultyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    protected static ?string $navigationLabel = 'Faculty';
+
+    protected static ?string $pluralModelLabel = 'Faculty';
+
     public static function form(Form $form): Form
     {
         return $form
