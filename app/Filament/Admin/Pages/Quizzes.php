@@ -12,34 +12,34 @@ use App\Support\Enums\UserType;
 use Illuminate\Support\Str;
 use Filament\Notifications\Notification;
 
-class ExamQuizzes extends Document
+class Quizzes extends Document
 {
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 14;
 
     protected static bool $shouldRegisterNavigation = true;
 
     public ?int $folder_id = null;
 
-    protected ?string $heading = 'Exam & Quizzes';
+    protected ?string $heading = 'Quizzes';
 
-    protected static ?string $navigationLabel = 'Exam & Quizzes';
+    protected static ?string $navigationLabel = 'Quizzes';
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationGroup = 'Documents';
 
-    protected static ?string $slug = '/exam-quizzes/{folderId?}';
+    protected static ?string $slug = '/quizzes/{folderId?}';
 
     public function mount(string $folderId = null): void
     {
-        $this->folder_id = $folderId == null ? 5 : intval($folderId);
+        $this->folder_id = $folderId == null ? 13 : intval($folderId);
 
         $this->fetchData();
     }
 
     public function getFileLabel()
     {
-        return "Exam/Quiz";
+        return "Quiz";
     }
 
     public function getDocumentLabel()
@@ -53,7 +53,7 @@ class ExamQuizzes extends Document
             NavigationItem::make(static::getNavigationLabel())
                 ->group(static::getNavigationGroup())
                 ->icon(static::getNavigationIcon())
-                ->isActiveWhen(fn (): bool => request()->routeIs("filament.admin.pages..exam-quizzes.*"))
+                ->isActiveWhen(fn (): bool => request()->routeIs("filament.admin.pages..subjects.*"))
                 ->sort(static::getNavigationSort())
                 ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
                 ->url(static::getNavigationUrl()),
