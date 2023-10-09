@@ -161,7 +161,7 @@ class RecycleBin extends Page
                         break;
                     }
                 case 'purge': {
-                        $folder->restore();
+                        $folder->forceDelete();
 
                         Notification::make()
                             ->title('Purged Successfully')
@@ -198,7 +198,7 @@ class RecycleBin extends Page
                         break;
                     }
                 case 'purge': {
-                        $asset->restore();
+                        $asset->forceDelete();
 
                         Notification::make()
                             ->title('Purged Successfully')
