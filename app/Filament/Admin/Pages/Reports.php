@@ -25,6 +25,8 @@ class Reports extends Page implements HasTable
 
     public Folder $folder;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static string $view = 'filament.pages.admin.reports';
 
     protected static ?string $slug = '/reports/{folderId?}';
@@ -41,10 +43,11 @@ class Reports extends Page implements HasTable
 
     protected function getTableQuery(): Builder
     {
-        $result = Folder::with(['descendants'])
+        $result = Folder::with(['descendants', 'creator' => function ($query) {
+            $query->orderBy('last_name', 'asc');
+        }])
             ->where('folder_id', $this->folder->id)
-            ->where('author_type', UserType::FACULTY->value)
-            ->orderBy('created_at', 'desc');
+            ->where('author_type', UserType::FACULTY->value);
 
         return $result;
     }
@@ -118,7 +121,7 @@ class Reports extends Page implements HasTable
         return [
             Tables\Actions\BulkAction::make('export')
                 ->action(function (Collection $records) {
-                    return Excel::download(new ExportCollection($records), $this->folder->name . '_' . Carbon::now('Asia/Manila') . '.csv');
+                    return Excel::download(new ExportCollection($records), $this->folder->name . '_' . Carbon::now('Asia/Manila') . '.xls');
                 }),
         ];
     }

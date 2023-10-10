@@ -44,6 +44,11 @@ class Folder extends Model implements IsActivitySubject
         return 'folder_id';
     }
 
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(Faculty::class, 'author_id');
+    }
+
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Folder::class, 'folder_id')->with(['parent', 'folders', 'assets']);
