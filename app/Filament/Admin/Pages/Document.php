@@ -175,6 +175,14 @@ class Document extends Page
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('new-report')
+                ->label('New Report')
+                ->iconButton()
+                ->outlined()
+                ->icon('heroicon-o-circle-stack')
+                ->url(fn (): string => route("filament.admin.pages..reports.{folderId?}", [
+                    'folderId' => $this->folder_id,
+                ])),
             ActionGroup::make([
                 Action::make('new-folder')
                     ->label('New Folder')
