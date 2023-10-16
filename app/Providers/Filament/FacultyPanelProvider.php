@@ -48,19 +48,20 @@ class FacultyPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->databaseNotifications()
             ->colors([
                 'primary' => [
-                    50 => "#803333",
-                    100 => "#803333",
-                    200 => "#803333",
-                    300 => "#803333",
+                    50  => "#F8D7DA",
+                    100 => "#EFB3B8",
+                    200 => "#E88E95",
+                    300 => "#E16972",
                     400 => "#803333",
                     500 => "#803333",
                     600 => "#803333",
-                    700 => "#803333",
-                    800 => "#803333",
-                    900 => "#803333",
-                    950 => "#803333",
+                    700 => "#8D1E20",
+                    800 => "#691517",
+                    900 => "#440B10",
+                    950 => "#2A0606",
                 ],
             ])
             ->navigationGroups([
