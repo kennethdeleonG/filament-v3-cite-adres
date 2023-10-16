@@ -12,34 +12,32 @@ use App\Support\Enums\UserType;
 use Illuminate\Support\Str;
 use Filament\Notifications\Notification;
 
-class CodeSamples extends Document
+class Accreditations extends Document
 {
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 1;
 
     protected static bool $shouldRegisterNavigation = true;
 
     public ?int $folder_id = null;
 
-    protected ?string $heading = 'Code Samples';
-
-    protected static ?string $navigationLabel = 'Code Samples';
+    protected ?string $heading = 'Accreditations';
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationGroup = 'Documents';
 
-    protected static ?string $slug = '/code-samples/{folderId?}';
+    protected static ?string $slug = '/accreditations/{folderId?}';
 
     public function mount(string $folderId = null): void
     {
-        $this->folder_id = $folderId == null ? 8 : intval($folderId);
+        $this->folder_id = $folderId == null ? 1 : intval($folderId);
 
         $this->fetchData();
     }
 
     public function getFileLabel()
     {
-        return "Code Sample";
+        return "Accreditations";
     }
 
     public function getDocumentLabel()
@@ -53,7 +51,7 @@ class CodeSamples extends Document
             NavigationItem::make(static::getNavigationLabel())
                 ->group(static::getNavigationGroup())
                 ->icon(static::getNavigationIcon())
-                ->isActiveWhen(fn (): bool => request()->routeIs("filament.faculty.pages..code-samples.*"))
+                ->isActiveWhen(fn (): bool => request()->routeIs("filament.faculty.pages..accreditations.*"))
                 ->sort(static::getNavigationSort())
                 ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
                 ->url(static::getNavigationUrl()),
