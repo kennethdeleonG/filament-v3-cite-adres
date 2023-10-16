@@ -17,7 +17,7 @@ use Filament\Actions\Action;
 
 class Exams extends Document
 {
-    protected static ?int $navigationSort = 13;
+    protected static ?int $navigationSort = 4;
 
     protected static bool $shouldRegisterNavigation = true;
 
@@ -35,7 +35,7 @@ class Exams extends Document
 
     public function mount(string $folderId = null): void
     {
-        $this->folder_id = $folderId == null ? 5 : intval($folderId);
+        $this->folder_id = $folderId == null ? 4 : intval($folderId);
 
         $this->fetchData();
     }
@@ -131,6 +131,14 @@ class Exams extends Document
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('new-report')
+                ->label('New Report')
+                ->iconButton()
+                ->outlined()
+                ->icon('heroicon-o-circle-stack')
+                ->url(fn (): string => route("filament.admin.pages..reports.{folderId?}", [
+                    'folderId' => $this->folder_id,
+                ])),
             ActionGroup::make([
                 Action::make('new-folder')
                     ->label('New Folder')

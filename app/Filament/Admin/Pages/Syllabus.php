@@ -14,7 +14,7 @@ use Filament\Notifications\Notification;
 
 class Syllabus extends Document
 {
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     protected static bool $shouldRegisterNavigation = true;
 
@@ -30,7 +30,7 @@ class Syllabus extends Document
 
     public function mount(string $folderId = null): void
     {
-        $this->folder_id = $folderId == null ? 1 : intval($folderId);
+        $this->folder_id = $folderId == null ? 2 : intval($folderId);
 
         $this->fetchData();
     }

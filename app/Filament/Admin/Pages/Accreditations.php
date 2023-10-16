@@ -12,34 +12,32 @@ use App\Support\Enums\UserType;
 use Illuminate\Support\Str;
 use Filament\Notifications\Notification;
 
-class LessonPlan extends Document
+class Accreditations extends Document
 {
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     protected static bool $shouldRegisterNavigation = true;
 
     public ?int $folder_id = null;
 
-    protected ?string $heading = 'Lesson Plans';
-
-    protected static ?string $navigationLabel = 'Lesson Plans';
+    protected ?string $heading = 'Accreditations';
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationGroup = 'Documents';
 
-    protected static ?string $slug = '/lesson-plan/{folderId?}';
+    protected static ?string $slug = '/accreditations/{folderId?}';
 
     public function mount(string $folderId = null): void
     {
-        $this->folder_id = $folderId == null ? 2 : intval($folderId);
+        $this->folder_id = $folderId == null ? 1 : intval($folderId);
 
         $this->fetchData();
     }
 
     public function getFileLabel()
     {
-        return "Lesson Plan";
+        return "Accreditations";
     }
 
     public function getDocumentLabel()
@@ -53,7 +51,7 @@ class LessonPlan extends Document
             NavigationItem::make(static::getNavigationLabel())
                 ->group(static::getNavigationGroup())
                 ->icon(static::getNavigationIcon())
-                ->isActiveWhen(fn (): bool => request()->routeIs("filament.admin.pages..lesson-plan.*"))
+                ->isActiveWhen(fn (): bool => request()->routeIs("filament.admin.pages..accreditations.*"))
                 ->sort(static::getNavigationSort())
                 ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
                 ->url(static::getNavigationUrl()),
@@ -80,13 +78,14 @@ class LessonPlan extends Document
     /** @return LengthAwarePaginator<FolderModel> */
     public function getFolders(int $page = 1): LengthAwarePaginator
     {
-        $result = FolderModel::with(['descendants'])->where(function ($query) {
-            if ($this->folder_id) {
-                $query->where('folder_id', $this->folder_id);
-            } else {
-                $query->whereNull('folder_id');
-            }
-        })
+        $result = FolderModel::with(['descendants'])
+            ->where(function ($query) {
+                if ($this->folder_id) {
+                    $query->where('folder_id', $this->folder_id);
+                } else {
+                    $query->whereNull('folder_id');
+                }
+            })
             ->orderBy('name')
             ->paginate(32, page: $page);
 
