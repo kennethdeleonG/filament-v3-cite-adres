@@ -57,6 +57,17 @@ class FolderSeeder extends Seeder
                 'path' => '/exams',
                 'is_private' => false,
             ],
+            // Rubrics 4
+            [
+                'uuid' => Str::uuid()->toString(),
+                'author_id' => null,
+                'author_type' => null,
+                'folder_id' => null,
+                'name' => 'Rubrics',
+                'slug' => 'rubrics',
+                'path' => '/rubrics',
+                'is_private' => false,
+            ],
         ];
 
         foreach ($folderData as $folders) {
