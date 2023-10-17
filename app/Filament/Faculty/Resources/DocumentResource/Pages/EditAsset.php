@@ -2,6 +2,7 @@
 
 namespace App\Filament\Faculty\Resources\DocumentResource\Pages;
 
+use App\Domain\Asset\Models\Asset;
 use App\Filament\Faculty\Resources\DocumentResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
@@ -17,7 +18,7 @@ class EditAsset extends EditRecord
 
     public function mount(int | string $record, string $label = ''): void
     {
-        $this->record = $this->resolveRecord($record);
+        $this->record = app(Asset::class)->where((new Asset())->getRouteKeyName(), $record)->first();
 
         $this->authorizeAccess();
 

@@ -48,7 +48,6 @@ class DocumentResource extends Resource
             ->schema([
                 Forms\Components\Section::make([
                     Forms\Components\TextInput::make('name')
-                        ->unique(ignoreRecord: true)
                         ->required(),
                     Forms\Components\FileUpload::make('file')
                         ->downloadable()
@@ -108,9 +107,18 @@ class DocumentResource extends Resource
 
                             $value = end($pathSegments);
 
-                            return in_array($value, ['Exam', 'Quiz']);
+                            return in_array($value, ['Exams']);
+                        }),
+                    Forms\Components\Textarea::make('comment')
+                        ->disabled()
+                        ->hidden(function (string|null $state = null) {
+                            if (empty($state) || is_null($state)) {
+                                return true;
+                            }
+                            return false;
                         })
                 ]),
+
 
             ]);
     }

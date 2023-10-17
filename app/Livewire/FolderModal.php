@@ -57,17 +57,7 @@ class FolderModal extends Component implements HasForms
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('')
-                    ->validationAttribute('name')
-                    ->dehydrateStateUsing(function ($state) {
-                        $existingRecords = Folder::where('name', 'LIKE', $state . '%')->where('folder_id', $this->parentId)
-                            ->whereNot('id', $this->folderId)->count();
-                        if ($existingRecords > 0) {
-                            return $state . ' - (' . $existingRecords . ')';
-                        }
-
-                        return $state;
-                    }),
+                    ->label('Name'),
                 Forms\Components\Toggle::make('is_private')->label('Private'),
             ])
             ->statePath('data');

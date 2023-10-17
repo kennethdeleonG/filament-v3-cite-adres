@@ -388,6 +388,7 @@ class Document extends Page
 
         if ($asset) {
             return match ($action) {
+                'comment' => $this->dispatch('commentAsset', $asset)->to(AssetModal::class),
                 'open' => redirect(route(
                     'filament.admin.resources.documents.edit',
                     [
@@ -433,5 +434,39 @@ class Document extends Page
     public function getFolderWithId(int $folderId)
     {
         return redirect()->to(self::getUrl() . '/' . $folderId);
+    }
+
+    public function getAssetActions(): array
+    {
+        return [
+            [
+                'action' => 'open',
+                'label' => 'Open',
+            ],
+            [
+                'action' => 'comment',
+                'label' => 'Comment',
+            ],
+            [
+                'action' => 'download',
+                'label' => 'Download',
+            ],
+            [
+                'action' => 'delete',
+                'label' => 'Delete',
+            ],
+            [
+                'action' => 'edit',
+                'label' => 'Edit',
+            ],
+            [
+                'action' => 'move-to',
+                'label' => 'Move to',
+            ],
+            [
+                'action' => 'show-history',
+                'label' => 'Show History',
+            ],
+        ];
     }
 }

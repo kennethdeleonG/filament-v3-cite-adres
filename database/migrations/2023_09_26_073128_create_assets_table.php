@@ -26,6 +26,7 @@ return new class extends Migration
             $table->unsignedBigInteger('size')->nullable();
             $table->string('file_type')->nullable();
             $table->boolean('is_private')->default(true);
+            $table->text('comment')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

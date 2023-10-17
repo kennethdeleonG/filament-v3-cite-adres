@@ -7,14 +7,20 @@ namespace App\Livewire;
 use App\Domain\Asset\Actions\DeleteAssetAction;
 use App\Domain\Asset\Actions\MoveAssetAction;
 use App\Domain\Asset\Models\Asset;
+use App\Domain\Faculty\Models\Faculty;
 use App\Domain\Folder\Models\Folder;
 use App\Filament\Admin\Pages\Document;
+use App\Filament\Faculty\Resources\DocumentResource;
+use App\Support\Enums\UserType;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
 use Illuminate\Contracts\View\View;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Collection;
+use Filament\Forms\Form;
+use Filament\Forms;
+use Filament\Notifications;
 
 /**
  * @property \Filament\Forms\ComponentContainer $form
@@ -30,11 +36,13 @@ class AssetModal extends Component implements HasForms
     public ?int $navigateFolderId = null;
     public bool $navigateRoot = true;
     public ?string $navigateFolderName = null;
+    public ?array $data = [];
 
     /** @var array */
     protected $listeners = [
         'moveAssetToFolder' => 'moveAssetToFolderModal',
         'deleteAsset' => 'deleteAssetModal',
+        'commentAsset' => 'commentAssetModal'
     ];
 
     public function mount(int $folderId = null): void
@@ -169,5 +177,79 @@ class AssetModal extends Component implements HasForms
         $this->navigateFolderId = null;
         $this->navigateFolderName = null;
         $this->previousFolderId = null;
+    }
+
+    //comment modal 
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Textarea::make('comment')
+                    ->label('Comment')
+            ])
+            ->statePath('data');
+    }
+
+    //comment listener
+    public function commentAssetModal(array $data): void
+    {
+        $assetModel = Asset::find($data['id']);
+
+        if ($assetModel->author_type != UserType::FACULTY->value) {
+            Notification::make()
+                ->title("You can't add a comment to this asset.")
+                ->warning()
+                ->send();
+
+            return;
+        }
+
+        $this->form->fill($data);
+
+        $this->dispatch('open-modal', id: 'comment-asset-modal-handle');
+
+        $this->asset = $assetModel instanceof Asset ? $assetModel : null;
+    }
+
+    //the comment handler
+    public function commentAction(): void
+    {
+        $comment = $this->form->getState()['comment'];
+
+        if ($comment) {
+            $record = $this->asset;
+
+            $record->update([
+                'comment' => $comment
+            ]);
+
+            $author = Faculty::find($this->asset->author_id);
+
+            $author->notify(
+                Notification::make()
+                    ->title("Admin added a comment to your file.")
+                    ->body($comment)
+                    ->actions([
+                        Notifications\Actions\Action::make('View')
+                            ->outlined()
+                            ->url(route('filament.faculty.resources.documents.edit', [
+                                'record' => $record,
+                                'ownerRecord' => $record->folder ?? null,
+                                'label' => $record->folder->name
+                            ]), shouldOpenInNewTab: true),
+                        // ->url("http://filament-cite.test/faculty/documents/file/$record->slug/edit", true),
+                        Notifications\Actions\Action::make('Mark as read')
+                            ->outlined()
+                            ->markAsRead(),
+                    ])
+                    ->toDatabase(),
+            );
+
+            $this->dispatch('close-modal', id: 'comment-asset-modal-handle');
+            Notification::make()
+                ->title('Comment updated.')
+                ->success()
+                ->send();
+        }
     }
 }

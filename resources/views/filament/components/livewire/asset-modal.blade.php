@@ -106,6 +106,39 @@
         </div>
     </x-filament::modal>
 
+    {{-- comment modal --}}
+    <x-filament::modal id="comment-asset-modal-handle" width="sm" class="p-4 space-y-2 text-center dark:text-white"
+        displayClasses="block">
+
+        {{-- tricks to disable autofocus --}}
+        <input type="text" hidden autofocus />
+
+        <div class="text-center">
+            <x-filament::modal.heading class="mb-4">
+                Add a comment
+            </x-filament::modal.heading>
+        </div>
+
+        <div class="filament-modal-content">
+            {{ $this->form }}
+        </div>
+
+        <div class="text-right flex gap-4 justify-end">
+            <x-filament::button type="button" outlined color="gray"
+                x-on:click="$dispatch('close-modal', { id: 'comment-asset-modal-handle' })">
+                Cancel
+            </x-filament::button>
+            <x-filament::button type="button" wire:click="commentAction" wire:loading.attr="disabled">
+                <span wire:target="commentAction" wire:loading.remove>
+                    Save
+                </span>
+                <span wire:target="commentAction" wire:loading>
+                    Saving...
+                </span>
+            </x-filament::button>
+        </div>
+    </x-filament::modal>
+
     <script>
         window.addEventListener('close-modal', event => {
             if (event.detail.id === "move-asset-modal-handle") {

@@ -382,6 +382,7 @@ class Document extends Page
         }
     }
 
+
     public function mountActionAsset(string $action, int $assetId)
     {
         $asset = Asset::find($assetId);
