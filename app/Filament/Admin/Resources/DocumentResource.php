@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
 
 class DocumentResource extends Resource
 {
@@ -24,6 +25,23 @@ class DocumentResource extends Resource
     public static function getGloballySearchableAttributes(): array
     {
         return ['name', 'folder.name',];
+    }
+
+    public static function getGlobalSearchResultUrl(Model $record): string
+    {
+        $root = $record->folder->ancestors->first();
+
+        if (!$root) {
+            $label = $record->folder->name;
+        } else {
+            $label = $root->name;
+        }
+
+        return static::getUrl('edit', [
+            'record' => $record,
+            'ownerRecord' => $record->folder ?? null,
+            'label' =>  $label
+        ]);
     }
 
     public static function form(Form $form): Form
