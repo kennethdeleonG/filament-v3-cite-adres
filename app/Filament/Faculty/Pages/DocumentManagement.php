@@ -253,6 +253,7 @@ class DocumentManagement extends Page
         }
 
         $data['author_id'] = auth()->user()->id;
+        $data['author_type'] = UserType::FACULTY->value;
         $data['slug'] = Str::slug($data['name']);
         $data['path'] = $path . '/' . Str::slug($data['name']);
         $data['folder_id'] = $this->folder_id;
