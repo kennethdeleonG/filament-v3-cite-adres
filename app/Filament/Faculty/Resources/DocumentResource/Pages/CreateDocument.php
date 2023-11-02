@@ -46,7 +46,9 @@ class CreateDocument extends CreateRecord
 
             $value = end($pathSegments);
 
-            $this->heading = $value;
+            $decodedValue = urldecode($value);
+
+            $this->heading = $decodedValue;
         }
     }
 

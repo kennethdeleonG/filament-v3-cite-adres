@@ -117,16 +117,16 @@ class DocumentResource extends Resource
                     Forms\Components\Hidden::make('file_type'),
                     Forms\Components\Toggle::make('is_private')
                         ->label('Private')
-                        ->default(true)
-                        ->disabled(function (Request $request) {
-                            $path = $request->path();
+                        ->default(true),
+                    // ->disabled(function (Request $request) {
+                    //     $path = $request->path();
 
-                            $pathSegments = explode('/', $path);
+                    //     $pathSegments = explode('/', $path);
 
-                            $value = end($pathSegments);
+                    //     $value = end($pathSegments);
 
-                            return in_array($value, ['Exams']);
-                        }),
+                    //     return in_array($value, ['Exams']);
+                    // }),
                     Forms\Components\Textarea::make('comment')
                         ->disabled()
                         ->hidden(function (string|null $state = null) {
