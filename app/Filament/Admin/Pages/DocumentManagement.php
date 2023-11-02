@@ -30,15 +30,16 @@ use Illuminate\View\View;
 use Throwable;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\Action;
+use Illuminate\Contracts\Support\Htmlable;
 
-class Document extends Page
+class DocumentManagement extends Page
 {
     use FolderTrait;
     use AssetTrait;
     use CustomPagination;
     use CustomFormatHelper;
 
-    protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $navigationGroup = 'Documents';
 
     public ?int $folder_id = null;
 
@@ -67,6 +68,16 @@ class Document extends Page
     public function getHeader(): ?View
     {
         return view('filament.components.custom-header');
+    }
+
+    public function getHeading(): string | Htmlable
+    {
+        if ($this->folder_id) {
+            $folder = FolderModel::find($this->folder_id);
+            return $folder->name;
+        }
+
+        return "Documents";
     }
 
     //for breadcrumbs in body
@@ -174,15 +185,22 @@ class Document extends Page
     //right actions
     protected function getHeaderActions(): array
     {
-        return [
-            Action::make('new-report')
+
+        $actions = [];
+
+        if ($this->folder_id) {
+            $actions[] =
+                Action::make('new-report')
                 ->label('New Report')
                 ->iconButton()
                 ->outlined()
                 ->icon('heroicon-o-circle-stack')
                 ->url(fn (): string => route("filament.admin.pages..reports.{folderId?}", [
                     'folderId' => $this->folder_id,
-                ])),
+                ]));
+        }
+
+        $actions[] =
             ActionGroup::make([
                 Action::make('new-folder')
                     ->label('New Folder')
@@ -198,7 +216,7 @@ class Document extends Page
                         $this->createFolder($data);
                     }),
                 Action::make('new-asset')
-                    ->label($this->getDocumentLabel())
+                    ->label('New File')
                     ->action(function () {
                         $folder = FolderModel::find($this->folder_id);
 
@@ -208,14 +226,15 @@ class Document extends Page
                         );
                     }),
             ])
-                ->view('filament.components.custom-action-group.index')
-                ->label('Create New'),
-        ];
+            ->view('filament.components.custom-action-group.index')
+            ->label('Create New');
+
+        return $actions;
     }
 
     public function getFileLabel()
     {
-        return "Document";
+        return $this->getHeading();
     }
 
     public function getDocumentLabel()
