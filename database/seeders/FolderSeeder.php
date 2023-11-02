@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Domain\Folder\Models\Folder;
+use App\Support\Enums\UserType;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -16,8 +17,8 @@ class FolderSeeder extends Seeder
             // Accreditation 1
             [
                 'uuid' => Str::uuid()->toString(),
-                'author_id' => null,
-                'author_type' => null,
+                'author_id' => 1,
+                'author_type' => UserType::ADMIN->value,
                 'folder_id' => null,
                 'name' => 'Accreditation',
                 'slug' => 'accreditation',
@@ -27,8 +28,8 @@ class FolderSeeder extends Seeder
             // Syllabus 2 
             [
                 'uuid' => Str::uuid()->toString(),
-                'author_id' => null,
-                'author_type' => null,
+                'author_id' => 1,
+                'author_type' => UserType::ADMIN->value,
                 'folder_id' => null,
                 'name' => 'Syllabus',
                 'slug' => 'syllabus',
@@ -38,8 +39,8 @@ class FolderSeeder extends Seeder
             // Schedule 3 
             [
                 'uuid' => Str::uuid()->toString(),
-                'author_id' => null,
-                'author_type' => null,
+                'author_id' => 1,
+                'author_type' => UserType::ADMIN->value,
                 'folder_id' => null,
                 'name' => 'Schedule',
                 'slug' => 'schedule',
@@ -49,8 +50,8 @@ class FolderSeeder extends Seeder
             // Exams 4
             [
                 'uuid' => Str::uuid()->toString(),
-                'author_id' => null,
-                'author_type' => null,
+                'author_id' => 1,
+                'author_type' => UserType::ADMIN->value,
                 'folder_id' => null,
                 'name' => 'Exams',
                 'slug' => 'exams',
@@ -60,8 +61,8 @@ class FolderSeeder extends Seeder
             // Rubrics 4
             [
                 'uuid' => Str::uuid()->toString(),
-                'author_id' => null,
-                'author_type' => null,
+                'author_id' => 1,
+                'author_type' => UserType::ADMIN->value,
                 'folder_id' => null,
                 'name' => 'Rubrics',
                 'slug' => 'rubrics',
