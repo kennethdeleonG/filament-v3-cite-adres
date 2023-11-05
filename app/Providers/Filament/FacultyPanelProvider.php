@@ -3,6 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Faculty\Pages\CustomRegistration;
+use App\Filament\Faculty\Pages\CustomRequestPasswordReset;
+use App\Filament\Faculty\Pages\CustomResetPassword;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -29,6 +31,7 @@ class FacultyPanelProvider extends PanelProvider
             ->path('faculty')
             ->login()
             ->registration(CustomRegistration::class)
+            ->passwordReset(CustomRequestPasswordReset::class, CustomResetPassword::class)
             ->emailVerification()
             ->colors([
                 'primary' => Color::Amber,
