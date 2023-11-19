@@ -31,7 +31,7 @@ class StatsOverview extends BaseWidget
 
 
         return [
-            Stat::make('Storage Usage', '3GB'),
+            // Stat::make('Storage Usage', '3GB'),
             Stat::make('Documents', $assetCount),
             Stat::make('Recycle Bin', $deletedAssetCount),
         ];
