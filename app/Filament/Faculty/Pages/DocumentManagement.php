@@ -32,6 +32,7 @@ use Throwable;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\Action;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Facades\Auth;
 
 class DocumentManagement extends Page
 {
@@ -381,7 +382,21 @@ class DocumentManagement extends Page
                         break;
                     }
                 case 'delete': {
-                        $this->dispatch('deleteFolder', $folder)->to(FolderModal::class);
+                        $user = Auth::user();
+
+                        if ($folder->author_type == 'admin') {
+                            Notification::make()
+                                ->title('You cant delete this folder')
+                                ->danger()
+                                ->send();
+                        } else if ($folder->author_id != $user->id) {
+                            Notification::make()
+                                ->title('You cant delete this folder')
+                                ->danger()
+                                ->send();
+                        } else {
+                            $this->dispatch('deleteFolder', $folder)->to(FolderModal::class);
+                        }
                         break;
                     }
                 case 'move-to': {
@@ -407,40 +422,63 @@ class DocumentManagement extends Page
         $asset = Asset::find($assetId);
 
         if ($asset) {
-            return match ($action) {
-                'open' => redirect(route(
-                    'filament.faculty.resources.documents.edit',
-                    [
-                        'record' => $asset,
-                        'ownerRecord' => $asset->folder ?? null,
-                        'label' => $this->getFileLabel()
-                    ]
-                )),
-                'download' => app(DownloadSingleFileAction::class)->execute(
-                    $asset,
-                    DownloadData::fromArray(
+            switch ($action) {
+                case 'open':
+                    redirect(route(
+                        'filament.faculty.resources.documents.edit',
                         [
-                            'files' => [$asset->file],
-                            'user_type' => 'faculty',
-                            'admin_id' => auth()->user()?->id,
-                            'asset_type' => 'asset',
-                            'asset_id' => $asset->id,
+                            'record' => $asset,
+                            'ownerRecord' => $asset->folder ?? null,
+                            'label' => $this->getFileLabel(),
                         ]
-                    )
-                ),
-                'delete' => $this->dispatch('deleteAsset', $asset)->to(AssetModal::class),
-                'edit' => redirect(route(
-                    'filament.faculty.resources.documents.edit',
-                    [
-                        'record' => $asset,
-                        'ownerRecord' => $asset->folder,
-                        'label' => $this->getFileLabel()
-                    ]
-                )),
-                'move-to' => $this->dispatch('moveAssetToFolder', $asset, $this->folder_id)->to(AssetModal::class),
-                'show-history' => redirect(route('filament.faculty.pages..history.{subjectType?}.{subjectId?}', ['subjectType' => 'assets', 'subjectId' => $asset->id])),
-                default => null
-            };
+                    ));
+
+                    break;
+                case 'download':
+                    app(DownloadSingleFileAction::class)->execute(
+                        $asset,
+                        DownloadData::fromArray(
+                            [
+                                'files' => [$asset->file],
+                                'user_type' => 'faculty',
+                                'admin_id' => auth()->user()?->id,
+                                'asset_type' => 'asset',
+                                'asset_id' => $asset->id,
+                            ]
+                        )
+                    );
+
+                    break;
+                case 'delete':
+                    $user = Auth::user();
+                    if ($asset->author_type == 'admin' || $asset->author_id != $user->id) {
+                        Notification::make()
+                            ->title('You can\'t delete this file')
+                            ->danger()
+                            ->send();
+                    } else {
+                        $this->dispatch('deleteAsset', $asset)->to(AssetModal::class);
+                    }
+                    break;
+                case 'edit':
+                    redirect(route(
+                        'filament.faculty.resources.documents.edit',
+                        [
+                            'record' => $asset,
+                            'ownerRecord' => $asset->folder,
+                            'label' => $this->getFileLabel(),
+                        ]
+                    ));
+                    break;
+                case 'move-to':
+                    $this->dispatch('moveAssetToFolder', $asset, $this->folder_id)->to(AssetModal::class);
+                    break;
+                case 'show-history':
+                    redirect(route('filament.faculty.pages..history.{subjectType?}.{subjectId?}', ['subjectType' => 'assets', 'subjectId' => $asset->id]));
+                    break;
+                default:
+                    break;
+            }
         }
 
         return null;
