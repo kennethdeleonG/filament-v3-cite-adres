@@ -30,6 +30,8 @@
                             </div>
                         </div>
                     </div>
+                    <span style="font-size: 12px; text-gray-950 dark:text-white">Created by:
+                        {{ $this->getAuthor($document) }}</span>
                 </div>
             </div>
         </div>

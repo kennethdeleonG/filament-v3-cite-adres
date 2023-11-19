@@ -4,6 +4,7 @@ namespace App\Filament\Faculty\Pages;
 
 use App\Domain\Asset\Actions\DownloadSingleFileAction;
 use App\Domain\Asset\Models\Asset;
+use App\Domain\Faculty\Models\Faculty;
 use App\Domain\Folder\Models\Folder as FolderModel;
 use App\Domain\Folder\Actions\CreateFolderAction;
 use App\Domain\Folder\Actions\DownloadFolderAction;
@@ -204,7 +205,8 @@ class DocumentManagement extends Page
                         ->form([
                             Forms\Components\TextInput::make('name')
                                 ->label(''),
-                            Forms\Components\Toggle::make('is_private')->label('Private')->default(true),
+                            Forms\Components\Toggle::make('is_private')->label('Private')
+                                ->default(false)->hidden(),
                         ])
                         ->modalFooterActionsAlignment('right')
                         ->action(function (array $data) {
@@ -451,5 +453,17 @@ class DocumentManagement extends Page
     public function getFolderWithId(int $folderId)
     {
         return redirect()->to(self::getUrl() . '/' . $folderId);
+    }
+
+    public function getAuthor(FolderModel|Asset $model)
+    {
+
+        if ($model->author_type == UserType::ADMIN->value) {
+            return "Admin";
+        } else {
+            $faculty = Faculty::find($model->author_id);
+
+            return $faculty->first_name . ' ' . $faculty->last_name;
+        }
     }
 }
