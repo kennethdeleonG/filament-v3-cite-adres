@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Pages;
 
 use App\Domain\Asset\Actions\DownloadSingleFileAction;
 use App\Domain\Asset\Models\Asset;
+use App\Domain\Faculty\Models\Faculty;
 use App\Domain\Folder\Models\Folder as FolderModel;
 use App\Domain\Folder\Actions\CreateFolderAction;
 use App\Domain\Folder\Actions\DownloadFolderAction;
@@ -15,6 +16,7 @@ use App\Support\Concerns\AssetTrait;
 use App\Support\Concerns\CustomFormatHelper;
 use App\Support\Concerns\CustomPagination;
 use App\Support\Concerns\FolderTrait;
+use App\Support\Enums\UserType;
 use Filament\Pages\Page;
 use Filament\Pages\Actions;
 use Filament\Forms;
@@ -487,5 +489,22 @@ class DocumentManagement extends Page
                 'label' => 'Show History',
             ],
         ];
+    }
+
+    public function getAuthor(FolderModel|Asset $model)
+    {
+
+        if ($model->author_type == UserType::ADMIN->value) {
+            return "Admin";
+        } else {
+            $faculty = Faculty::find($model->author_id);
+
+            return $faculty->first_name . ' ' . $faculty->last_name;
+        }
+    }
+
+    public function getRedirectUrl($folderId)
+    {
+        return self::getUrl() . '/' . $folderId;
     }
 }
