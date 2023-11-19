@@ -80,7 +80,7 @@ class History extends Page implements HasTable
     protected function getTableColumns(): array
     {
         return [
-            Tables\Columns\TextColumn::make('id')->label('ID'),
+            // Tables\Columns\TextColumn::make('id')->label('ID'),
             Tables\Columns\TextColumn::make('description'),
             Tables\Columns\TextColumn::make('created_at')->label('Logged at')->sortable()
                 ->dateTime(timezone: 'Asia/Manila'),
