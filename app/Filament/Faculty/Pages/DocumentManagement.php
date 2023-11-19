@@ -466,4 +466,9 @@ class DocumentManagement extends Page
             return $faculty->first_name . ' ' . $faculty->last_name;
         }
     }
+
+    public function getRedirectUrl($folderId)
+    {
+        return self::getUrl() . '/' . $folderId;
+    }
 }
