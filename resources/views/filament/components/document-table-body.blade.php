@@ -1,5 +1,6 @@
 @props(['actions', 'document', 'type'])
 
+
 <tr
     x-bind:class="{
         'hidden': false & amp; & amp;isGroupCollapsed(''),
@@ -25,11 +26,15 @@
                                         <img src="{{ asset("images/icons/{$this->getAssetIconImage($document)}") }}"
                                             alt="" style="width: 25px; margin-right: 7px;" />
                                     @endif
-                                    <span>{{ $document->name }}</span>
+                                    <a href="{{ $this->getRedirectUrl($document->id) }}" class="hover:underline">
+                                        <span>{{ $document->name }}</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <span style="font-size: 12px; text-gray-950 dark:text-white">Created by:
+                        {{ $this->getAuthor($document) }}</span>
                 </div>
             </div>
         </div>

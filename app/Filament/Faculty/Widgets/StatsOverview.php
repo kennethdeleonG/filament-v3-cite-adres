@@ -12,7 +12,7 @@ class StatsOverview extends BaseWidget
 {
     protected function getStats(): array
     {
-        $facultyCount = Faculty::whereNull('deleted_at')->count();
+        // $facultyCount = Faculty::whereNull('deleted_at')->count();
         $assetCount = Asset::whereNull('deleted_at')
             ->where(function ($query) {
                 $query->where('author_type', UserType::FACULTY->value)
@@ -31,7 +31,7 @@ class StatsOverview extends BaseWidget
 
 
         return [
-            Stat::make('Faculty', $facultyCount),
+            Stat::make('Storage Usage', '3GB'),
             Stat::make('Documents', $assetCount),
             Stat::make('Recycle Bin', $deletedAssetCount),
         ];

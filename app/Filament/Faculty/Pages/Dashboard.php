@@ -2,18 +2,25 @@
 
 namespace App\Filament\Faculty\Pages;
 
+use App\Domain\Announcement\Models\Announcement;
 use App\Domain\Asset\Actions\DownloadSingleFileAction;
 use App\Domain\Asset\Models\Asset;
+use App\Domain\Faculty\Models\Faculty;
 use App\Domain\Folder\DataTransferObjects\DownloadData;
+use App\Domain\Folder\Models\Folder;
 use App\Filament\Faculty\Widgets\StatsOverview;
 use App\Livewire\AssetModal;
 use App\Support\Concerns\AssetTrait;
 use App\Support\Concerns\CustomFormatHelper;
 use App\Support\Concerns\FolderTrait;
 use App\Support\Enums\UserType;
+use Carbon\Carbon;
+use DateTimeZone;
+use Filament\Notifications\Notification;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 
 class Dashboard extends BaseDashboard
 {
@@ -23,9 +30,11 @@ class Dashboard extends BaseDashboard
 
     protected ?string $heading = 'Dashboard';
 
-    protected static string $view = 'filament.pages.admin.dashboard';
+    protected static string $view = 'filament.pages.faculty.dashboard';
 
     public mixed $assetList;
+
+    public mixed $announcementList;
 
     public function mount(): void
     {
@@ -46,6 +55,27 @@ class Dashboard extends BaseDashboard
     {
         $assetQueryData = $this->getAssets();
         $this->assetList = new Collection($assetQueryData->items());
+
+        $this->announcementList = $this->getAnnouncements();
+    }
+
+    public function getAnnouncements()
+    {
+        $result = Announcement::orderBy('created_at', 'desc')->get();
+
+        return $result;
+    }
+
+    public function dateFrom(Carbon $date): string
+    {
+        $carbonDate = Carbon::parse($date);
+
+        $userTimezone = 'Asia/Manila';
+        if (!empty($userTimezone) && in_array($userTimezone, DateTimeZone::listIdentifiers())) {
+            $carbonDate->setTimezone($userTimezone);
+        }
+
+        return $carbonDate->diffForHumans();
     }
 
     /** @return LengthAwarePaginator<Asset> */
@@ -70,26 +100,63 @@ class Dashboard extends BaseDashboard
         $asset = Asset::find($assetId);
 
         if ($asset) {
-            return match ($action) {
-                'open' => redirect(route('filament.faculty.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder ?? null])),
-                'download' => app(DownloadSingleFileAction::class)->execute(
-                    $asset,
-                    DownloadData::fromArray(
-                        [
+            $result = null;
+
+            switch ($action) {
+                case 'open':
+                    $result = redirect(route(
+                        'filament.faculty.resources.documents.edit',
+                        ['record' => $asset, 'ownerRecord' => $asset->folder ?? null]
+                    ));
+                    break;
+
+                case 'download':
+                    $result = app(DownloadSingleFileAction::class)->execute(
+                        $asset,
+                        DownloadData::fromArray([
                             'files' => [$asset->file],
                             'user_type' => 'faculty',
                             'admin_id' => auth()->user()?->id,
                             'asset_type' => 'asset',
                             'asset_id' => $asset->id,
-                        ]
-                    )
-                ),
-                'delete' => $this->dispatch('deleteAsset', $asset)->to(AssetModal::class),
-                'edit' => redirect(route('filament.faculty.resources.documents.edit', ['record' => $asset, 'ownerRecord' => $asset->folder])),
-                'move-to' => $this->dispatch('moveAssetToFolder', $asset, null)->to(AssetModal::class),
-                'show-history' => redirect(route('filament.faculty.pages..history.{subjectType?}.{subjectId?}', ['subjectType' => 'assets', 'subjectId' => $asset->id])),
-                default => null
-            };
+                        ])
+                    );
+                    break;
+
+                case 'delete':
+                    $user = Auth::user();
+                    if ($asset->author_type == 'admin' || $asset->author_id != $user->id) {
+                        Notification::make()
+                            ->title('You can\'t delete this file')
+                            ->danger()
+                            ->send();
+                    } else {
+                        $this->dispatch('deleteAsset', $asset)->to(AssetModal::class);
+                    }
+                    break;
+
+                case 'edit':
+                    $result = redirect(route(
+                        'filament.faculty.resources.documents.edit',
+                        ['record' => $asset, 'ownerRecord' => $asset->folder]
+                    ));
+                    break;
+
+                case 'move-to':
+                    $this->dispatch('moveAssetToFolder', $asset, null)->to(AssetModal::class);
+                    break;
+
+                case 'show-history':
+                    $result = redirect(route('filament.faculty.pages..history.{subjectType?}.{subjectId?}', [
+                        'subjectType' => 'assets',
+                        'subjectId' => $asset->id,
+                    ]));
+                    break;
+                default:
+                    break;
+            }
+
+            return $result;
         }
 
         return null;
@@ -119,5 +186,22 @@ class Dashboard extends BaseDashboard
                 'label' => 'Show History',
             ],
         ];
+    }
+
+    public function getAuthor(Folder|Asset $model)
+    {
+
+        if ($model->author_type == UserType::ADMIN->value) {
+            return "Admin";
+        } else {
+            $faculty = Faculty::find($model->author_id);
+
+            return $faculty->first_name . ' ' . $faculty->last_name;
+        }
+    }
+
+    public function getRedirectUrl($folderId)
+    {
+        return self::getUrl() . '/' . $folderId;
     }
 }
