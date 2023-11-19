@@ -15,11 +15,11 @@
 
 <body>
     {{-- NAVBAR --}}
-    <nav class="bg-[#531717] border-gray-200 dark:bg-gray-900">
+    <nav class="bg-[#000000] border-gray-200 dark:bg-gray-900">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
             <div class="flex items-center">
-                <img src="{{ asset('images/cite-logo.png') }}" class="h-8 mr-3" alt="CITE logo" />
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-[#E5B040]">CITE
+                <img src="{{ asset('images/cicslog.png') }}" class="h-8 mr-3" alt="CITE logo" />
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-[#ffffff]">CICS
                     ADRES: A
                     Document Repository System</span>
             </div>
@@ -63,10 +63,10 @@
     {{-- HERO 1 --}}
     <div class="w-full h-[600px] relative">
         <div class="absolute inset-0 bg-cover bg-center  "
-            style="background-image: url('{{ asset('images/home-bg.jpg') }}');">
+            style="background-image: url('{{ asset('images/2.jpg') }}');">
             <div class="bg-black bg-opacity-50 w-full h-full flex justify-center items-center flex-col">
-                <img src="{{ asset('images/bulsu-logo.png') }}" class="h-64 " alt="Bulsu logo" />
-                <p class="text-[40px] relative z-10 font-bold text-white"><span class="text-[#E5B040]">CITE</span>
+                <img src="{{ asset('images/cicslog.png') }}" class="h-64 " alt="Bulsu logo" />
+                <p class="text-[40px] relative z-10 font-bold text-white"><span class="text-[gray]">CICS</span>
                     ADRES
                 </p>
                 <p class="text-md text-white font-bold">A DOCUMENT REPOSITORY SYSTEM</p>
@@ -82,10 +82,10 @@
             <div class="w-1/2 flex justify-center ">
                 <div
                     class="max-w-lg bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                    <img class="rounded-t-lg" src="{{ asset('images/home-bg.jpg') }}" alt="" />
+                    <img class="rounded-t-lg" src="{{ asset('images/1.jpg') }}" alt="" />
                     <div class="p-5">
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                            Empowering users with full control over their document management needs, the CITE Department
+                            Empowering users with full control over their document management needs, the CICS Department
                             Document Repository System offers a user-friendly CRUD (Create, Read, Update, Delete) system
                             that allows faculty members, staff, and students to effortlessly create, access, update, and
                             delete documents with ease. Whether it's generating new syllabi, reviewing research papers,
@@ -101,10 +101,10 @@
             <div class="w-1/2 flex justify-center">
                 <div
                     class="max-w-lg bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                    <img class="rounded-t-lg" src="{{ asset('images/home-bg.jpg') }}" alt="" />
+                    <img class="rounded-t-lg" src="{{ asset('images/3.jpg') }}" alt="" />
                     <div class="p-5">
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                            Introducing the CITE ADRES: A Document Repository System, a groundbreaking capstone project
+                            Introducing the CICS ADRES: A Document Repository System, a groundbreaking capstone project
                             that revolutionizes document
                             management within the CITE Department. Our innovative system
                             offers a secure and user-friendly platform for storing, organizing,
@@ -122,7 +122,7 @@
     </div>
 
     {{-- ABOUT US  --}}
-    <div class="w-full relative bg-[#502929] pb-8 mt-6">
+    <div class="w-full relative bg-[#5b5b5b] pb-8 mt-6">
         <h1 class="text-[40px] text-center w-full mt-2 text-white"> ABOUT US</h1>
         <div class="text-center mx-24">
 
