@@ -31,7 +31,13 @@ class CustomRegistration extends Register
                         ->maxLength(100)
                         ->required(),
                 ])->columns(2),
-                $this->getEmailFormComponent(),
+                Forms\Components\TextInput::make('email')
+                    ->label(__('filament-panels::pages/auth/register.form.email.label'))
+                    ->email()
+                    ->regex('/^[a-zA-Z0-9._%+-]+@bulsu\.edu\.ph$/')
+                    ->required()
+                    ->maxLength(255)
+                    ->unique($this->getUserModel()),
                 $this->getPasswordFormComponent(),
                 $this->getPasswordConfirmationFormComponent(),
             ]);
