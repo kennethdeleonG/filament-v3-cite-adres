@@ -29,7 +29,8 @@ class AdminResource extends Resource
             ->schema([
                 Forms\Components\Section::make([
                     Forms\Components\Placeholder::make('status')
-                        ->content(fn (User $record) => Str::headline($record->status->value)),
+                        ->content(fn (?User $record) => Str::headline($record->status->value) ?? '')
+                        ->hiddenOn('create'),
                     Forms\Components\Group::make([
                         Forms\Components\TextInput::make('name')
                             ->maxLength(100)
@@ -39,6 +40,9 @@ class AdminResource extends Resource
                             ->maxLength(100)
                             ->required(),
                     ])->columns(2),
+                    Forms\Components\TextInput::make('designation')
+                        ->label('Designation')
+                        ->maxLength(100),
                     Forms\Components\Group::make([
                         Forms\Components\TextInput::make('password')
                             ->required()

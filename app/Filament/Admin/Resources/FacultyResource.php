@@ -30,7 +30,8 @@ class FacultyResource extends Resource
             ->schema([
                 Forms\Components\Section::make([
                     Forms\Components\Placeholder::make('status')
-                        ->content(fn (Faculty $record) => Str::headline($record->status->value)),
+                        ->content(fn (?Faculty $record) => Str::headline($record->status->value) ?? '')
+                        ->hiddenOn('create'),
                     Forms\Components\Group::make([
                         Forms\Components\TextInput::make('first_name')
                             ->label('First Name')
