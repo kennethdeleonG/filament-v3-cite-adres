@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Domain\Faculty\Enums\FacultyStatuses;
 use App\Filament\Admin\Resources\AdminResource\Pages;
 use App\Filament\Admin\Resources\AdminResource\RelationManagers;
 use App\Models\User;
@@ -63,7 +64,12 @@ class AdminResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('email')
+                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(function ($state) {
+                        return $state == FacultyStatuses::BLOCKED ? 'danger' : 'primary';
+                    }),
             ])
             ->filters([
                 //

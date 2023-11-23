@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Domain\Faculty\Enums\FacultyStatuses;
 use App\Domain\Faculty\Models\Faculty;
 use App\Filament\Admin\Resources\FacultyResource\Pages;
 use Filament\Forms;
@@ -110,7 +111,12 @@ class FacultyResource extends Resource
                     ->label(trans('Designation'))
                     ->formatStateUsing(function ($record) {
                         return empty($record->designation) ? 'N/A' : $record->designation;
-                    })
+                    }),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(function ($state) {
+                        return $state == FacultyStatuses::BLOCKED ? 'danger' : 'primary';
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
