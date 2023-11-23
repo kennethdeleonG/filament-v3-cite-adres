@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class AdminResource extends Resource
 {
@@ -26,6 +27,8 @@ class AdminResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make([
+                    Forms\Components\Placeholder::make('status')
+                        ->content(fn (User $record) => Str::headline($record->status->value)),
                     Forms\Components\Group::make([
                         Forms\Components\TextInput::make('name')
                             ->maxLength(100)

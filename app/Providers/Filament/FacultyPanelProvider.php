@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Faculty\Pages\CustomLogin;
 use App\Filament\Faculty\Pages\CustomRegistration;
 use App\Filament\Faculty\Pages\CustomRequestPasswordReset;
 use App\Filament\Faculty\Pages\CustomResetPassword;
@@ -29,7 +30,7 @@ class FacultyPanelProvider extends PanelProvider
         return $panel
             ->id('faculty')
             ->path('faculty')
-            ->login()
+            ->login(CustomLogin::class)
             ->registration(CustomRegistration::class)
             ->passwordReset(CustomRequestPasswordReset::class, CustomResetPassword::class)
             ->emailVerification()
