@@ -10,6 +10,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class FacultyResource extends Resource
@@ -27,6 +28,8 @@ class FacultyResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make([
+                    Forms\Components\Placeholder::make('status')
+                        ->content(fn (Faculty $record) => Str::headline($record->status->value)),
                     Forms\Components\Group::make([
                         Forms\Components\TextInput::make('first_name')
                             ->label('First Name')
