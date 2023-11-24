@@ -186,7 +186,9 @@ class DocumentManagement extends Page
             } else {
                 $query->whereNull('folder_id');
             }
-        })->orderBy('name')
+        })
+            ->where('is_private', false)
+            ->orderBy('name')
             ->paginate(32, page: $page);
 
         return $result;

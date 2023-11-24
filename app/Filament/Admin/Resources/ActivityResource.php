@@ -101,6 +101,18 @@ class ActivityResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('log_name')
+                    ->label(__('Logged By'))
+                    ->formatStateUsing(function ($record) {
+                        if ($record->causer_type === 'App\Domain\Faculty\Models\Faculty') {
+                            $faculty = Faculty::find(intval($record->causer_id));
+                            $name = Str::headline($faculty ? $faculty->first_name : '') . ' ' . Str::headline($faculty ? $faculty->last_name : '');
+
+                            return $name;
+                        } else {
+                            return 'Admin';
+                        }
+                    }),
                 Tables\Columns\TextColumn::make('subject_type')
                     ->label(__('filament-spatie-activitylog::activity.subject'))
                     ->formatStateUsing(function ($state) {
@@ -110,8 +122,6 @@ class ActivityResource extends Resource
                 Tables\Columns\TextColumn::make('description')
                     ->label(__('filament-spatie-activitylog::activity.description'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('log_name')
-                    ->label(__('filament-spatie-activitylog::activity.log')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('filament-spatie-activitylog::activity.logged_at'))
                     ->dateTime(),
