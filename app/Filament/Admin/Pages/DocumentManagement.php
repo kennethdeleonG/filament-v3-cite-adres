@@ -387,7 +387,7 @@ class DocumentManagement extends Page
                         break;
                     }
                 case 'move-to': {
-                        $this->dispatch('moveFolder', $folder)->to(FolderModal::class);
+                        $this->dispatch('moveFolder', $folder, $this->folder_id)->to(FolderModal::class);
 
                         break;
                     }
@@ -430,7 +430,7 @@ class DocumentManagement extends Page
                         ]
                     )
                 ),
-                'delete' => $this->dispatch('deleteAsset', $asset)->to(AssetModal::class),
+                'delete' => $this->dispatch('deleteAsset', $asset,)->to(AssetModal::class),
                 'edit' => redirect(route(
                     'filament.admin.resources.documents.edit',
                     [
@@ -439,7 +439,7 @@ class DocumentManagement extends Page
                         'label' => $this->getFileLabel()
                     ]
                 )),
-                'move-to' => $this->dispatch('moveAssetToFolder', $asset)->to(AssetModal::class),
+                'move-to' => $this->dispatch('moveAssetToFolder', $asset, $this->folder_id)->to(AssetModal::class),
                 'show-history' => redirect(route('filament.admin.pages..documents.history.{subjectType?}.{subjectId?}', ['subjectType' => 'assets', 'subjectId' => $asset->id])),
                 default => null
             };
