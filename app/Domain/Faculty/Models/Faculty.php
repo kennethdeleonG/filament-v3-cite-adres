@@ -6,9 +6,13 @@ namespace App\Domain\Faculty\Models;
 
 use App\Domain\Faculty\Enums\FacultyStatuses;
 use App\Domain\Faculty\Notifications\VerifyEmail;
+use App\Domain\Folder\Models\Folder;
+use App\Support\Enums\UserType;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
@@ -61,5 +65,11 @@ class Faculty extends Authenticatable implements MustVerifyEmail, HasMedia
         $this->addMediaCollection('image')
             ->singleFile()
             ->registerMediaConversions($registerMediaConversions);
+    }
+
+    public function folders(): HasMany
+    {
+        return $this->hasMany(Folder::class, 'author_id', 'id')
+            ->where('author_type', UserType::FACULTY->value);
     }
 }
