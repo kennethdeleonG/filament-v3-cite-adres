@@ -8,6 +8,7 @@ use App\Domain\Folder\Actions\UpdateFolderAction;
 use App\Domain\Folder\DataTransferObjects\FolderData;
 use App\Domain\Folder\Models\Folder;
 use App\Filament\Admin\Pages\Document;
+use App\Models\User;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Livewire\Component;
 use Filament\Forms\Contracts\HasForms;
@@ -17,6 +18,7 @@ use Filament\Forms;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Filament\Forms\Form;
+use Illuminate\Support\Facades\Auth;
 
 class FolderModal extends Component implements HasForms
 {
@@ -54,12 +56,25 @@ class FolderModal extends Component implements HasForms
     // //edit folder modal
     public function form(Form $form): Form
     {
-        return $form
-            ->schema([
+        $admin = Auth::user();
+
+        $formData = [
+            Forms\Components\TextInput::make('name')
+                ->label('Name'),
+            Forms\Components\Toggle::make('is_private')->label('Private'),
+        ];
+
+        if ($admin instanceof User) {
+            $formData = [
                 Forms\Components\TextInput::make('name')
                     ->label('Name'),
+                Forms\Components\DatePicker::make('due_date'),
                 Forms\Components\Toggle::make('is_private')->label('Private'),
-            ])
+            ];
+        }
+
+        return $form
+            ->schema($formData)
             ->statePath('data');
     }
 
@@ -82,6 +97,7 @@ class FolderModal extends Component implements HasForms
     public function editAction(): void
     {
         $folder_name = $this->form->getState()['name'];
+        $folder_due_date = $this->form->getState()['due_date'];
         $folder_visibility = $this->form->getState()['is_private'];
 
         if (is_null($folder_name)) {
@@ -100,6 +116,7 @@ class FolderModal extends Component implements HasForms
         $data['slug'] = Str::slug($folder_name);
         $data['path'] = $updatedPath;
         $data['is_private'] = $folder_visibility;
+        $data['due_date'] = $folder_due_date;
 
         if (isset($this->folder)) {
             $result = app(UpdateFolderAction::class)

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Folder\DataTransferObjects;
 
+use Carbon\Carbon;
+
 class FolderData
 {
     public function __construct(
@@ -15,6 +17,7 @@ class FolderData
         public readonly ?bool $is_private = false,
         public readonly ?int $folder_id = null,
         public readonly ?int $id = null,
+        public readonly ?Carbon $due_date = null,
     ) {
     }
 
@@ -29,6 +32,7 @@ class FolderData
             is_private: $data['is_private'] ?? false,
             folder_id: $data['folder_id'] ?? null,
             id: $data['id'] ?? null,
+            due_date: Carbon::parse($data['due_date']) ?? null,
         );
     }
 }

@@ -22,6 +22,7 @@ class CreateFolderAction
                 'slug' => $folderData->slug,
                 'path' => $folderData->path,
                 'is_private' => $folderData->is_private,
+                'due_date' => $folderData->due_date,
             ]);
 
             $parent = Folder::find($folderData->folder_id);
@@ -42,6 +43,7 @@ class CreateFolderAction
                 'slug' => $folderData->slug,
                 'path' => $folderData->path,
                 'is_private' => $folderData->is_private,
+                'due_date' => $folderData->due_date,
             ]);
 
             activity()->withoutLogs(function () use ($folder) {

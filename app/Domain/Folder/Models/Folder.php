@@ -31,11 +31,13 @@ class Folder extends Model implements IsActivitySubject
         'name',
         'path',
         'is_private',
+        'due_date',
     ];
 
     protected $casts = [
         'data' => 'json',
         'deleted_at' => 'datetime',
+        'due_date' => 'datetime',
     ];
 
     /** @return string*/

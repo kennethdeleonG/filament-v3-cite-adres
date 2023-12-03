@@ -18,6 +18,7 @@ class UpdateFolderAction
                 'slug' => $folderData->slug,
                 'path' => $folderData->path,
                 'is_private' => $folderData->is_private,
+                'due_date' => $folderData->due_date,
             ]
         );
 

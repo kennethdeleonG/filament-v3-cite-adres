@@ -32,6 +32,7 @@ use Illuminate\View\View;
 use Throwable;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\Action;
+use Filament\Forms\Components\DatePicker;
 use Illuminate\Contracts\Support\Htmlable;
 
 class DocumentManagement extends Page
@@ -211,6 +212,7 @@ class DocumentManagement extends Page
                     ->form([
                         Forms\Components\TextInput::make('name')
                             ->label(''),
+                        Forms\Components\DatePicker::make('due_date'),
                         Forms\Components\Toggle::make('is_private')->label('Private')->default(true),
                     ])
                     ->modalFooterActionsAlignment('right')
@@ -261,6 +263,7 @@ class DocumentManagement extends Page
         $data['slug'] = Str::slug($data['name']);
         $data['path'] = $path . '/' . Str::slug($data['name']);
         $data['folder_id'] = $this->folder_id;
+        $data['due_date'] = $data['due_date'];
 
         $result = app(CreateFolderAction::class)
             ->execute(FolderData::fromArray($data));
