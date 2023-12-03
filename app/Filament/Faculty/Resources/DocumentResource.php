@@ -117,7 +117,8 @@ class DocumentResource extends Resource
                     Forms\Components\Hidden::make('file_type'),
                     Forms\Components\Toggle::make('is_private')
                         ->label('Private')
-                        ->default(true),
+                        ->default(true)
+                        ->hidden(),
                     // ->disabled(function (Request $request) {
                     //     $path = $request->path();
 
