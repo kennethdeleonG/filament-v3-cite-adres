@@ -1,4 +1,4 @@
-@props(['actions', 'document', 'type', 'folderx'])
+@props(['actions', 'document', 'type', 'showDueDate'])
 
 
 <tr
@@ -98,25 +98,23 @@
             </div>
         </div>
     </td>
-    @if (is_null($folderx) || $folderx == 0)
-        <td class="fi-ta-cell p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3 fi-table-cell-name"
-            wire:key="ulem3AZdbQ9IWh0qx1MP.table.record.1.column.name">
-            <div class="fi-ta-col-wrp">
-                <div class="fi-ta-text grid gap-y-1 px-3 py-4">
-                    <div class="">
-                        <div class="flex max-w-max">
-                            <div
-                                class="fi-ta-text-item inline-flex items-center gap-1.5 text-sm text-gray-950 dark:text-white">
-                                <div>
-                                    {{ $document->due_date ? $this->convertedDueDate($document->due_date) : 'N/A' }}
-                                </div>
+    <td class="fi-ta-cell p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3 fi-table-cell-name"
+        wire:key="ulem3AZdbQ9IWh0qx1MP.table.record.1.column.name">
+        <div class="fi-ta-col-wrp">
+            <div class="fi-ta-text grid gap-y-1 px-3 py-4">
+                <div class="">
+                    <div class="flex max-w-max">
+                        <div
+                            class="fi-ta-text-item inline-flex items-center gap-1.5 text-sm text-gray-950 dark:text-white">
+                            <div>
+                                {{ $document->due_date ? $this->convertedDueDate($document->due_date) : 'N/A' }}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </td>
-    @endif
+        </div>
+    </td>
     <td class="fi-ta-cell p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3 fi-table-cell-name"
         wire:key="ulem3AZdbQ9IWh0qx1MP.table.record.1.column.name">
         <div class="fi-ta-col-wrp">

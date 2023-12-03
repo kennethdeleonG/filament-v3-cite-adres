@@ -45,18 +45,16 @@
                         </span>
                     </th>
 
-                    @if (is_null($this->folder_id) || $this->folder_id == 0)
-                        <th
-                            class="fi-ta-header-cell px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6 fi-table-header-cell-designation">
-                            <span class="group flex w-full items-center gap-x-1 whitespace-nowrap ">
+                    <th
+                        class="fi-ta-header-cell px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6 fi-table-header-cell-designation">
+                        <span class="group flex w-full items-center gap-x-1 whitespace-nowrap ">
 
-                                <span class="text-sm font-semibold text-gray-950 dark:text-white">
-                                    Due Date
-                                </span>
-
+                            <span class="text-sm font-semibold text-gray-950 dark:text-white">
+                                Due Date
                             </span>
-                        </th>
-                    @endif
+
+                        </span>
+                    </th>
 
                     <th
                         class="fi-ta-header-cell px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6 fi-table-header-cell-designation">
@@ -77,7 +75,6 @@
                         'document' => $folder,
                         'type' => 'folder',
                         'actions' => $this->getFolderActions(),
-                        'folder_id' => $this->folder_id,
                     ])
                 @endforeach
                 @foreach ($this->assetList as $asset)
@@ -85,7 +82,6 @@
                         'document' => $asset,
                         'type' => 'asset',
                         'actions' => $this->getAssetActions(),
-                        'folder_id' => $this->folder_id,
                     ])
                 @endforeach
             </tbody>

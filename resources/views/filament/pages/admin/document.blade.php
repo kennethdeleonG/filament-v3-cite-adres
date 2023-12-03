@@ -45,18 +45,16 @@
 
                         </span>
                     </th>
-                    @if (is_null($this->folder_id) || $this->folder_id == 0)
-                        <th
-                            class="fi-ta-header-cell px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6 fi-table-header-cell-designation">
-                            <span class="group flex w-full items-center gap-x-1 whitespace-nowrap ">
+                    <th
+                        class="fi-ta-header-cell px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6 fi-table-header-cell-designation">
+                        <span class="group flex w-full items-center gap-x-1 whitespace-nowrap ">
 
-                                <span class="text-sm font-semibold text-gray-950 dark:text-white">
-                                    Due Date
-                                </span>
-
+                            <span class="text-sm font-semibold text-gray-950 dark:text-white">
+                                Due Date
                             </span>
-                        </th>
-                    @endif
+
+                        </span>
+                    </th>
                     <th
                         class="fi-ta-header-cell px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6 fi-table-header-cell-designation">
                         <span class="group flex w-full items-center gap-x-1 whitespace-nowrap ">
@@ -70,14 +68,12 @@
                     <th class="w-5"></th>
                 </tr>
             </thead>
-            {{-- {{ dd($this->folder_id) }} --}}
             <tbody class="divide-y divide-gray-200 whitespace-nowrap dark:divide-white/5">
                 @foreach ($this->folderList as $folder)
                     @include('filament.components.document-table-body', [
                         'document' => $folder,
                         'type' => 'folder',
                         'actions' => $this->getFolderActions(),
-                        'folderx' => $this->folder_id,
                     ])
                 @endforeach
 
@@ -86,7 +82,6 @@
                         'document' => $asset,
                         'type' => 'asset',
                         'actions' => $this->getAssetActions(),
-                        'folderx' => $this->folder_id,
                     ])
                 @endforeach
             </tbody>
