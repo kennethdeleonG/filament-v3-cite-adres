@@ -34,6 +34,7 @@ use Filament\Actions\ActionGroup;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Database\Eloquent\Builder;
 
 class DocumentManagement extends Page
 {
@@ -45,6 +46,7 @@ class DocumentManagement extends Page
     protected static ?string $navigationGroup = 'Documents';
 
     public ?int $folder_id = null;
+    public ?string $filterBy = null;
 
     protected ?string $heading = 'Documents';
 
@@ -66,6 +68,7 @@ class DocumentManagement extends Page
 
         $this->fetchData();
     }
+
 
     //custom header
     public function getHeader(): ?View
@@ -137,6 +140,11 @@ class DocumentManagement extends Page
         ];
     }
 
+    public function updatedFilterBy(string $value): void
+    {
+        $this->fetchData();
+    }
+
     private function fetchData(): void
     {
         $folderQueryData = $this->getFolders();
@@ -173,13 +181,27 @@ class DocumentManagement extends Page
     /** @return LengthAwarePaginator<FolderModel> */
     public function getFolders(int $page = 1): LengthAwarePaginator
     {
-        $result = FolderModel::with(['descendants'])->where(function ($query) {
+        $filterBy = $this->filterBy;
+        $_FILTER = null;
+
+        if ($filterBy == "public") {
+            $_FILTER = false;
+        } else if ($filterBy == "private") {
+            $_FILTER = true;
+        }
+
+        $result = FolderModel::with(['descendants'])->where(function ($query) use ($_FILTER) {
             if ($this->folder_id) {
                 $query->where('folder_id', $this->folder_id);
             } else {
                 $query->whereNull('folder_id');
             }
-        })->orderBy('name')
+
+            if ($_FILTER !== null) {
+                $query->where('is_private', $_FILTER);
+            }
+        })
+            ->orderBy('name')
             ->paginate(32, page: $page);
 
         return $result;
@@ -260,6 +282,7 @@ class DocumentManagement extends Page
         }
 
         $data['author_id'] = auth()->user()->id;
+        $data['author_type'] = UserType::ADMIN->value;
         $data['slug'] = Str::slug($data['name']);
         $data['path'] = $path . '/' . Str::slug($data['name']);
         $data['folder_id'] = $this->folder_id;
