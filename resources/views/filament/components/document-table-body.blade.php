@@ -1,4 +1,4 @@
-@props(['actions', 'document', 'type', 'folder_id'])
+@props(['actions', 'document', 'type', 'folderx'])
 
 
 <tr
@@ -98,7 +98,7 @@
             </div>
         </div>
     </td>
-    @if (is_null($folder_id) || $folder_id == 0)
+    @if (is_null($folderx) || $folderx == 0)
         <td class="fi-ta-cell p-0 first-of-type:ps-1 last-of-type:pe-1 sm:first-of-type:ps-3 sm:last-of-type:pe-3 fi-table-cell-name"
             wire:key="ulem3AZdbQ9IWh0qx1MP.table.record.1.column.name">
             <div class="fi-ta-col-wrp">

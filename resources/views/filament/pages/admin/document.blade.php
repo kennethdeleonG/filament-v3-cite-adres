@@ -70,13 +70,14 @@
                     <th class="w-5"></th>
                 </tr>
             </thead>
+            {{-- {{ dd($this->folder_id) }} --}}
             <tbody class="divide-y divide-gray-200 whitespace-nowrap dark:divide-white/5">
                 @foreach ($this->folderList as $folder)
                     @include('filament.components.document-table-body', [
                         'document' => $folder,
                         'type' => 'folder',
                         'actions' => $this->getFolderActions(),
-                        'folder_id' => $this->folder_id,
+                        'folderx' => $this->folder_id,
                     ])
                 @endforeach
 
@@ -85,7 +86,7 @@
                         'document' => $asset,
                         'type' => 'asset',
                         'actions' => $this->getAssetActions(),
-                        'folder_id' => $this->folder_id,
+                        'folderx' => $this->folder_id,
                     ])
                 @endforeach
             </tbody>
