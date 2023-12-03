@@ -24,6 +24,20 @@ trait CustomFormatHelper
         return $carbonDate->translatedFormat($format);
     }
 
+    public function convertedDueDate(Carbon $date): string
+    {
+        $format = "M j, Y";
+
+        $carbonDate = Carbon::parse($date);
+
+        $userTimezone = 'Asia/Manila';
+        if (!empty($userTimezone) && in_array($userTimezone, DateTimeZone::listIdentifiers())) {
+            $carbonDate->setTimezone($userTimezone);
+        }
+
+        return $carbonDate->translatedFormat($format);
+    }
+
     public function convertedAssetSize(int $bytes): string
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
