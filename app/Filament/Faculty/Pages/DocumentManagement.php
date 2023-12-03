@@ -187,6 +187,10 @@ class DocumentManagement extends Page
                 $query->whereNull('folder_id');
             }
         })
+            ->where(function ($query) {
+                $query->where('due_date', '>=', now())
+                    ->orWhere('due_date', null);
+            })
             ->where('is_private', false)
             ->orderBy('name')
             ->paginate(32, page: $page);
