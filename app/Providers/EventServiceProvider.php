@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Domain\Announcement\Events\FacultyAnnouncementNotificationEvent;
+use App\Domain\Announcement\Events\FacultyFolderCreatedNotificationEvent;
 use App\Domain\Announcement\Listeners\FacultyAnnouncementNotificationListener;
+use App\Domain\Announcement\Listeners\FacultyFolderCreatedNotificationListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -21,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         FacultyAnnouncementNotificationEvent::class => [
             FacultyAnnouncementNotificationListener::class,
+        ],
+        FacultyFolderCreatedNotificationEvent::class => [
+            FacultyFolderCreatedNotificationListener::class,
         ],
     ];
 

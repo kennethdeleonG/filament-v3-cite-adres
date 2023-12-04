@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Folder\Actions;
 
+use App\Domain\Announcement\Events\FacultyFolderCreatedNotificationEvent;
 use App\Domain\Folder\Models\Folder;
 use App\Domain\Folder\DataTransferObjects\FolderData;
 use Illuminate\Support\Str;
@@ -12,7 +13,7 @@ class CreateFolderAction
 {
     public function execute(FolderData $folderData): Folder
     {
-        if (!is_null($folderData->folder_id)) {
+        if ($folderData->folder_id != 0) {
             $folder = Folder::create([
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => $folderData->author_id,
@@ -49,6 +50,11 @@ class CreateFolderAction
             activity()->withoutLogs(function () use ($folder) {
                 $folder->saveAsRoot();
             });
+
+            event(new FacultyFolderCreatedNotificationEvent(
+                $folder,
+                $folderData,
+            ));
 
             return $folder;
         }

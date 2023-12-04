@@ -483,6 +483,7 @@ class DocumentManagement extends Page
         return redirect()->to(self::getUrl() . '/' . $folderId);
     }
 
+
     public function getAssetActions(): array
     {
         return [
