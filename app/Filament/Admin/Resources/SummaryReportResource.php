@@ -6,6 +6,8 @@ use App\Domain\Faculty\Enums\FacultyStatuses;
 use App\Domain\Faculty\Models\Faculty;
 use App\Domain\Folder\Models\Folder;
 use App\Filament\Admin\Resources\SummaryReportResource\Pages;
+use Carbon\Carbon;
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -53,6 +55,20 @@ class SummaryReportResource extends Resource
                     ->label(trans('Designation'))
                     ->formatStateUsing(function ($record) {
                         return $record->designation ?? 'N/A';
+                    }),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Remarks')
+                    ->badge()
+                    ->color('danger')
+                    ->formatStateUsing(function ($livewire) {
+                        $folder_id = $livewire->getTable()->getFilter('folder_id')->getState()['value'];
+
+                        $folder = Folder::where('id', $folder_id)
+                            ->where('due_date', '<=', now())->first();
+
+                        if ($folder) {
+                            return "LATE";
+                        }
                     }),
             ])
             ->filters([
