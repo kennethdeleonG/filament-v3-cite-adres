@@ -22,11 +22,16 @@ class StatsOverview extends BaseWidget
                 $query->where('is_private', false);
             })
             ->count();
-        $deletedAssetCount = Asset::onlyTrashed()->count();
+        $deletedAssetCount = Asset::onlyTrashed()
+            ->where(function ($query) {
+                $query->where('author_type', UserType::FACULTY->value)
+                    ->where('author_id', auth()->user()->id);
+            })
+            ->count();
 
 
         return [
-            Stat::make('Faculties', $facultyCount),
+            Stat::make('Faculty', $facultyCount),
             Stat::make('Documents', $assetCount),
             Stat::make('Recycle Bin', $deletedAssetCount),
         ];

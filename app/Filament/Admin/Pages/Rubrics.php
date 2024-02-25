@@ -37,6 +37,16 @@ class Rubrics extends Document
         $this->fetchData();
     }
 
+    public function getFileLabel()
+    {
+        return "Rubrics";
+    }
+
+    public function getDocumentLabel()
+    {
+        return "New " . $this->getFileLabel();
+    }
+
     public static function getNavigationItems(): array
     {
         return [

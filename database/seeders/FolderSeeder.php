@@ -57,15 +57,15 @@ class FolderSeeder extends Seeder
                 'path' => '/assignments',
                 'is_private' => false,
             ],
-            // Exams & Quizzes 5 
+            // Exams 5 
             [
                 'uuid' => Str::uuid()->toString(),
                 'author_id' => null,
                 'author_type' => null,
                 'folder_id' => null,
-                'name' => 'Exams & Quizzes',
-                'slug' => 'exams-quizzes',
-                'path' => '/exams-quizzes',
+                'name' => 'Exams',
+                'slug' => 'exams',
+                'path' => '/exams',
                 'is_private' => false,
             ],
             // Lab Exercises 6
@@ -144,7 +144,18 @@ class FolderSeeder extends Seeder
                 'slug' => 'subjects',
                 'path' => '/subjects',
                 'is_private' => false,
-            ]
+            ],
+            // Quizzes 13 
+            [
+                'uuid' => Str::uuid()->toString(),
+                'author_id' => null,
+                'author_type' => null,
+                'folder_id' => null,
+                'name' => 'Quizzes',
+                'slug' => 'quizzes',
+                'path' => '/quizzes',
+                'is_private' => false,
+            ],
         ];
 
         foreach ($folderData as $folders) {

@@ -19,6 +19,7 @@ class UpdateFacultyAction
             'gender' => $facultyData->gender,
             'mobile' => $facultyData->mobile,
             'designation' => $facultyData->designation,
+            'password' => $facultyData->password
         ]);
 
         return $record;

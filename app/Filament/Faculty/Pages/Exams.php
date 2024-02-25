@@ -11,35 +11,38 @@ use App\Domain\Folder\Models\Folder as FolderModel;
 use App\Support\Enums\UserType;
 use Illuminate\Support\Str;
 use Filament\Notifications\Notification;
+use Filament\Forms;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\Action;
 
-class CodeSamples extends Document
+class Exams extends Document
 {
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 13;
 
     protected static bool $shouldRegisterNavigation = true;
 
     public ?int $folder_id = null;
 
-    protected ?string $heading = 'Code Samples';
+    protected ?string $heading = 'Exams';
 
-    protected static ?string $navigationLabel = 'Code Samples';
+    protected static ?string $navigationLabel = 'Exams';
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationGroup = 'Documents';
 
-    protected static ?string $slug = '/code-samples/{folderId?}';
+    protected static ?string $slug = '/exams/{folderId?}';
 
     public function mount(string $folderId = null): void
     {
-        $this->folder_id = $folderId == null ? 8 : intval($folderId);
+        $this->folder_id = $folderId == null ? 5 : intval($folderId);
 
         $this->fetchData();
     }
 
     public function getFileLabel()
     {
-        return "Code Sample";
+        return "Exam";
     }
 
     public function getDocumentLabel()
@@ -53,7 +56,7 @@ class CodeSamples extends Document
             NavigationItem::make(static::getNavigationLabel())
                 ->group(static::getNavigationGroup())
                 ->icon(static::getNavigationIcon())
-                ->isActiveWhen(fn (): bool => request()->routeIs("filament.faculty.pages..code-samples.*"))
+                ->isActiveWhen(fn (): bool => request()->routeIs("filament.faculty.pages..exams.*"))
                 ->sort(static::getNavigationSort())
                 ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
                 ->url(static::getNavigationUrl()),
@@ -119,6 +122,7 @@ class CodeSamples extends Document
         $data['slug'] = Str::slug($data['name']);
         $data['path'] = $path . '/' . Str::slug($data['name']);
         $data['folder_id'] = $this->folder_id;
+        $data['is_private'] = true;
 
         $result = app(CreateFolderAction::class)
             ->execute(FolderData::fromArray($data));
@@ -130,5 +134,42 @@ class CodeSamples extends Document
                 ->success()
                 ->send();
         }
+    }
+
+    //right actions
+    protected function getHeaderActions(): array
+    {
+        return [
+            ActionGroup::make([
+                Action::make('new-folder')
+                    ->label('New Folder')
+                    ->modalHeading('New Folder')
+                    ->modalWidth('md')
+                    ->form([
+                        Forms\Components\TextInput::make('name')
+                            ->label(''),
+                        Forms\Components\Toggle::make('is_private')
+                            ->disabled()
+                            ->label('Private')
+                            ->default(true),
+                    ])
+                    ->modalFooterActionsAlignment('right')
+                    ->action(function (array $data) {
+                        $this->createFolder($data);
+                    }),
+                Action::make('new-asset')
+                    ->label($this->getDocumentLabel())
+                    ->action(function () {
+                        $folder = FolderModel::find($this->folder_id);
+
+                        return redirect()->route(
+                            'filament.faculty.resources.documents.create',
+                            ['ownerRecord' => $folder, 'label' => $this->getFileLabel()]
+                        );
+                    }),
+            ])
+                ->view('filament.components.custom-action-group.index')
+                ->label('Create New'),
+        ];
     }
 }

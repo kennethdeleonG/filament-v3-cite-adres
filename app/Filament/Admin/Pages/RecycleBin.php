@@ -74,7 +74,7 @@ class RecycleBin extends Page
     {
         $result = Folder::onlyTrashed()
             ->where(function ($query) {
-                $query->where('author_type', UserType::ADMIN->value)
+                $query->whereNull('author_type')
                     ->where('author_id', auth()->user()->id);
             })
             ->orderBy('deleted_at')
@@ -101,7 +101,7 @@ class RecycleBin extends Page
     {
         $result = Asset::onlyTrashed()
             ->where(function ($query) {
-                $query->where('author_type', UserType::ADMIN->value)
+                $query->whereNull('author_type')
                     ->where('author_id', auth()->user()->id);
             })
             ->orderBy('name')
@@ -161,7 +161,7 @@ class RecycleBin extends Page
                         break;
                     }
                 case 'purge': {
-                        $folder->restore();
+                        $folder->forceDelete();
 
                         Notification::make()
                             ->title('Purged Successfully')
@@ -198,7 +198,7 @@ class RecycleBin extends Page
                         break;
                     }
                 case 'purge': {
-                        $asset->restore();
+                        $asset->forceDelete();
 
                         Notification::make()
                             ->title('Purged Successfully')

@@ -37,6 +37,16 @@ class Subjects extends Document
         $this->fetchData();
     }
 
+    public function getFileLabel()
+    {
+        return "Subject";
+    }
+
+    public function getDocumentLabel()
+    {
+        return "New " . $this->getFileLabel();
+    }
+
     public static function getNavigationItems(): array
     {
         return [

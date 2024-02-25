@@ -43,6 +43,7 @@ class Faculty extends Authenticatable implements MustVerifyEmail, HasMedia
     protected $casts = [
         'status' => FacultyStatuses::class,
         'email_verified_at' => 'datetime',
+        'password' => 'hashed'
     ];
 
     public function sendEmailVerificationNotification(): void

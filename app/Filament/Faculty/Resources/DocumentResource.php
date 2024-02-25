@@ -11,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 class DocumentResource extends Resource
 {
@@ -97,7 +98,18 @@ class DocumentResource extends Resource
                         ->hidden(fn ($get) => $get('file') ? false : true),
                     Forms\Components\Hidden::make('size'),
                     Forms\Components\Hidden::make('file_type'),
-                    Forms\Components\Toggle::make('is_private')->label('Private')->default(false),
+                    Forms\Components\Toggle::make('is_private')
+                        ->label('Private')
+                        ->default(true)
+                        ->disabled(function (Request $request) {
+                            $path = $request->path();
+
+                            $pathSegments = explode('/', $path);
+
+                            $value = end($pathSegments);
+
+                            return in_array($value, ['Exam', 'Quiz']);
+                        })
                 ]),
 
             ]);
@@ -107,8 +119,8 @@ class DocumentResource extends Resource
     {
         return [
             'index' => Pages\ListAssets::route('/'),
-            'create' => Pages\CreateDocument::route('/file/create/{ownerRecord?}'),
-            'edit' => Pages\EditAsset::route('/file/{record}/edit/{ownerRecord?}'),
+            'create' => Pages\CreateDocument::route('/file/create/{ownerRecord?}/{label?}'),
+            'edit' => Pages\EditAsset::route('/file/{record}/edit/{ownerRecord?}/{label?}'),
         ];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Faculty\Pages;
+namespace App\Filament\Admin\Pages;
 
 use App\Domain\Folder\Actions\CreateFolderAction;
 use App\Domain\Folder\DataTransferObjects\FolderData;
@@ -8,38 +8,40 @@ use Filament\Navigation\NavigationItem;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Domain\Folder\Models\Folder as FolderModel;
-use App\Support\Enums\UserType;
 use Illuminate\Support\Str;
 use Filament\Notifications\Notification;
+use Filament\Forms;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\Action;
 
-class CodeSamples extends Document
+class Quizzes extends Document
 {
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 14;
 
     protected static bool $shouldRegisterNavigation = true;
 
     public ?int $folder_id = null;
 
-    protected ?string $heading = 'Code Samples';
+    protected ?string $heading = 'Quizzes';
 
-    protected static ?string $navigationLabel = 'Code Samples';
+    protected static ?string $navigationLabel = 'Quizzes';
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationGroup = 'Documents';
 
-    protected static ?string $slug = '/code-samples/{folderId?}';
+    protected static ?string $slug = '/quizzes/{folderId?}';
 
     public function mount(string $folderId = null): void
     {
-        $this->folder_id = $folderId == null ? 8 : intval($folderId);
+        $this->folder_id = $folderId == null ? 13 : intval($folderId);
 
         $this->fetchData();
     }
 
     public function getFileLabel()
     {
-        return "Code Sample";
+        return "Quiz";
     }
 
     public function getDocumentLabel()
@@ -53,7 +55,7 @@ class CodeSamples extends Document
             NavigationItem::make(static::getNavigationLabel())
                 ->group(static::getNavigationGroup())
                 ->icon(static::getNavigationIcon())
-                ->isActiveWhen(fn (): bool => request()->routeIs("filament.faculty.pages..code-samples.*"))
+                ->isActiveWhen(fn (): bool => request()->routeIs("filament.admin.pages..quizzes.*"))
                 ->sort(static::getNavigationSort())
                 ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
                 ->url(static::getNavigationUrl()),
@@ -80,21 +82,13 @@ class CodeSamples extends Document
     /** @return LengthAwarePaginator<FolderModel> */
     public function getFolders(int $page = 1): LengthAwarePaginator
     {
-        $result = FolderModel::with(['descendants'])
-            ->where(function ($query) {
-                if ($this->folder_id) {
-                    $query->where('folder_id', $this->folder_id);
-                } else {
-                    $query->whereNull('folder_id');
-                }
-            })
-            ->where(function ($query) {
-                $query->where('author_type', UserType::FACULTY->value)
-                    ->where('author_id', auth()->user()->id);
-            })
-            ->orWhere(function ($query) {
-                $query->where('is_private', false)->where('folder_id', $this->folder_id);
-            })
+        $result = FolderModel::with(['descendants'])->where(function ($query) {
+            if ($this->folder_id) {
+                $query->where('folder_id', $this->folder_id);
+            } else {
+                $query->whereNull('folder_id');
+            }
+        })
             ->orderBy('name')
             ->paginate(32, page: $page);
 
@@ -115,10 +109,10 @@ class CodeSamples extends Document
         }
 
         $data['author_id'] = auth()->user()->id;
-        $data['author_type'] = UserType::FACULTY->value;
         $data['slug'] = Str::slug($data['name']);
         $data['path'] = $path . '/' . Str::slug($data['name']);
         $data['folder_id'] = $this->folder_id;
+        $data['is_private'] = true;
 
         $result = app(CreateFolderAction::class)
             ->execute(FolderData::fromArray($data));
@@ -130,5 +124,42 @@ class CodeSamples extends Document
                 ->success()
                 ->send();
         }
+    }
+
+    //right actions
+    protected function getHeaderActions(): array
+    {
+        return [
+            ActionGroup::make([
+                Action::make('new-folder')
+                    ->label('New Folder')
+                    ->modalHeading('New Folder')
+                    ->modalWidth('md')
+                    ->form([
+                        Forms\Components\TextInput::make('name')
+                            ->label(''),
+                        Forms\Components\Toggle::make('is_private')
+                            ->disabled()
+                            ->label('Private')
+                            ->default(true),
+                    ])
+                    ->modalFooterActionsAlignment('right')
+                    ->action(function (array $data) {
+                        $this->createFolder($data);
+                    }),
+                Action::make('new-asset')
+                    ->label($this->getDocumentLabel())
+                    ->action(function () {
+                        $folder = FolderModel::find($this->folder_id);
+
+                        return redirect()->route(
+                            'filament.admin.resources.documents.create',
+                            ['ownerRecord' => $folder, 'label' => $this->getFileLabel()]
+                        );
+                    }),
+            ])
+                ->view('filament.components.custom-action-group.index')
+                ->label('Create New'),
+        ];
     }
 }

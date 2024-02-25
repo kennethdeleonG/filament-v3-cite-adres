@@ -6,6 +6,7 @@ use App\Domain\Asset\Actions\DownloadSingleFileAction;
 use App\Domain\Asset\Models\Asset;
 use App\Domain\Folder\DataTransferObjects\DownloadData;
 use App\Filament\Admin\Widgets\StatsOverview;
+use App\Livewire\AssetModal;
 use App\Support\Concerns\AssetTrait;
 use App\Support\Concerns\CustomFormatHelper;
 use App\Support\Concerns\FolderTrait;
@@ -83,5 +84,31 @@ class Dashboard extends BaseDashboard
         }
 
         return null;
+    }
+
+    public function getAssetActions(): array
+    {
+        return [
+            [
+                'action' => 'open',
+                'label' => 'Open',
+            ],
+            [
+                'action' => 'download',
+                'label' => 'Download',
+            ],
+            [
+                'action' => 'delete',
+                'label' => 'Delete',
+            ],
+            [
+                'action' => 'edit',
+                'label' => 'Edit',
+            ],
+            [
+                'action' => 'show-history',
+                'label' => 'Show History',
+            ],
+        ];
     }
 }

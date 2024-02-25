@@ -7,6 +7,7 @@ namespace App\Domain\Folder\Models;
 use Illuminate\Database\Eloquent\Model;
 use AlexJustesen\FilamentSpatieLaravelActivitylog\Contracts\IsActivitySubject;
 use App\Domain\Asset\Models\Asset;
+use App\Domain\Faculty\Models\Faculty;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -41,6 +42,11 @@ class Folder extends Model implements IsActivitySubject
     public function getParentIdName(): string
     {
         return 'folder_id';
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(Faculty::class, 'author_id');
     }
 
     public function parent(): BelongsTo
